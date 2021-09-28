@@ -2,21 +2,25 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <button @click="requestToApi">RequestToApi</button>
+    <button @click="requestToApi">Get all users</button>
     <p>{{ usersFromNode }}</p>
     <AddUserForm></AddUserForm>
+    <hr><br>
+    <TaskForm></TaskForm>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import AddUserForm from './components/AddUserForm.vue'
+import TaskForm from './components/TaskForm.vue'
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    AddUserForm
+    AddUserForm,
+    TaskForm
   },
   data: function(){
     return {
@@ -25,9 +29,8 @@ export default {
   },
   methods: {
     requestToApi: async function () {
-      const response = await fetch('/api/users');
-      // return await response.json();
-      this.usersFromNode.push(await response.json());
+      const response = await fetch('/api/allUsers');
+      this.usersFromNode = await response.json();
     },
     show: function(){
       alert('Hello')
