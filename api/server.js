@@ -78,6 +78,45 @@ async function addUserPost(req) { //insert user from form from AddUserForm.vue
 
 }
 
+async function addTaskPost(req) { //insert user from form from TaskForm.vue
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+  const taskToAdd = req.body;
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("tasks");
+    //user ID based on number of docs in collection "tasks"
+    taskToAdd._id = await collection.countDocuments() + 1;
+    const taskArr = await collection.insertOne(taskToAdd);
+    console.log(taskArr);
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+
+}
+
+async function getAllTasks() {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+  let allTasks = [];
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("tasks");
+    allTasks = await collection.find({}).toArray(); // await collection.find({}).toArray()
+    return allTasks;
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+
+}
 
 
 //-------------DB connection END ------------------//
@@ -100,6 +139,27 @@ app.post('/api/contacts', urlencodedParser, function(req, res) {
   addUserPost(req);
   return res.sendStatus(200);
 });
+
+// receives info for POST from TaskForm.vue
+app.post('/api/createTask', urlencodedParser, function(req, res) {
+  if (!req.body) return res.sendStatus(400);
+  console.log(req.body);
+  addTaskPost(req);
+  return res.sendStatus(200);
+});
+
+// get all tasks from collection
+app.get('/api/allTasks', (req, res) => {
+  async function as(){
+    console.log('api/allTasks called !!!');
+    var allTasks = await getAllTasks(); //await getAllTasks();
+    res.json(allTasks);
+    console.log(allTasks);
+    console.log('app.get(/api/allTasks - finished');
+  }
+  as()
+});
+
 
 app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);
