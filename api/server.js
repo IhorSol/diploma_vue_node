@@ -138,6 +138,30 @@ async function getAllUsers() {
 
 }
 
+async function updateTask(taskObj) {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+  let allTasks = [];
+
+  console.log('Log from updateTask. Inc obj');
+  console.log(taskObj);
+  console.log(taskObj.taskDescription);
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("tasks");
+    await collection.updateOne({_id: taskObj._id}, {$set: {taskDescription: taskObj.taskDescription}}); // await collection.find({}).toArray()
+    allTasks = await collection.find({}).toArray();
+    return allTasks;
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+
+}
+
 
 //-------------DB connection END ------------------//
 
@@ -184,6 +208,23 @@ app.get('/api/allTasks', (req, res) => {
     console.log('app.get(/api/allTasks - finished');
   }
   callGetAllTasks()
+});
+
+app.post('/api/updateTask', urlencodedParser, function(req, res) {
+  if (!req.body) return res.sendStatus(400);
+  console.log('/api/updateTask receiced');
+  console.log(req.body);
+  console.log(req.body._id);
+
+  async function callUpdateTask(reqBody){
+    console.log('api/updateTask called !!!');
+    var allTasks = await updateTask(reqBody); //await getAllTasks();
+    res.json(allTasks);
+    console.log(allTasks);
+    console.log('/api/updateTask - finished');
+  }
+  callUpdateTask(req.body)
+
 });
 
 

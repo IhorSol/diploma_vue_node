@@ -14,13 +14,22 @@
     <hr><br>
     <button @click="getAllTasks">Get all tasks</button>
     <div>All tasks - {{ allTasks }}</div>
-    <p v-for="item in allTasks" v-bind:key="item._id">{{ item.title }} - {{ item.taskDescription }}</p>
+    <p v-for="item in allTasks" v-bind:key="item._id">{{ item.title }} - {{ item.taskDescription }}</p> <hr>
+
+    <div class="task-update">
+      <TaskUpdate :tasks="allTasks"></TaskUpdate>
+    </div>
   </div>
 </template>
 
 <script>
+import TaskUpdate from './TaskUpdate.vue'
+
 export default {
   name: 'TaskForm',
+  components: {
+    TaskUpdate
+  },
   data: function () {
     return {
       allTasks: [],
