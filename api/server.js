@@ -88,6 +88,7 @@ async function addTaskPost(req) { //insert user from form from TaskForm.vue
     const collection = client.db("task_manager").collection("tasks");
     //user ID based on number of docs in collection "tasks"
     taskToAdd._id = await collection.countDocuments() + 1;
+    taskToAdd.status = 'new';
     const taskArr = await collection.insertOne(taskToAdd);
     console.log(taskArr);
 
@@ -118,6 +119,25 @@ async function getAllTasks() {
 
 }
 
+async function getAllUsers() {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+  let allUsers = [];
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("users");
+    allUsers = await collection.find({}).toArray();
+    return allUsers;
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+
+}
+
 
 //-------------DB connection END ------------------//
 
@@ -127,9 +147,15 @@ app.get('/', (req,res) => {
   res.sendFile(path.join(__dirname, '../my-app/public/test.html'));
 });
 
-app.get('/api/users', (req, res) => {
-  console.log('api/users called!!!!!!!')
-  res.json(users);
+app.get('/api/allUsers', (req, res) => {
+  async function callGetAllUsers(){
+    console.log('api/allUsers called !!!');
+    var allUsers = await getAllUsers();
+    res.json(allUsers);
+    console.log(allUsers);
+    console.log('app.get(/api/allUsers - finished');
+  }
+  callGetAllUsers()
 });
 
 // receives info for POST from AddUserForm.vue
@@ -150,14 +176,14 @@ app.post('/api/createTask', urlencodedParser, function(req, res) {
 
 // get all tasks from collection
 app.get('/api/allTasks', (req, res) => {
-  async function as(){
+  async function callGetAllTasks(){
     console.log('api/allTasks called !!!');
     var allTasks = await getAllTasks(); //await getAllTasks();
     res.json(allTasks);
     console.log(allTasks);
     console.log('app.get(/api/allTasks - finished');
   }
-  as()
+  callGetAllTasks()
 });
 
 
