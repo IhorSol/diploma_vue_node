@@ -162,7 +162,24 @@ async function updateTask(taskObj) {
 
 }
 
+async function checkUser(userObj) {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+  let checkedUser = '';
 
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("users");
+    checkedUser = await collection.find({login: userObj.login, password: userObj.password}).toArray();
+    return checkedUser;
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+
+}
 //-------------DB connection END ------------------//
 
 
@@ -224,7 +241,21 @@ app.post('/api/updateTask', urlencodedParser, function(req, res) {
     console.log('/api/updateTask - finished');
   }
   callUpdateTask(req.body)
+});
 
+app.post('/api/checkUser', urlencodedParser, function(req, res) {
+  if (!req.body) return res.sendStatus(400);
+  console.log('/api/checkUser started');
+  console.log(req.body);
+
+  async function callCheckUser(reqBody){
+    console.log('api/checkUser called !!!');
+    var checkedUser = await checkUser(reqBody); //await getAllTasks();
+    res.json(checkedUser);
+    console.log(checkedUser);
+    console.log('/api/checkUser - finished');
+  }
+  callCheckUser(req.body)
 });
 
 

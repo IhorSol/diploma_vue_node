@@ -5,10 +5,9 @@
       <h3>Авторизація</h3>
       <form class="avtorization">
         <input type="name" placeholder="Ввведіть логін" v-model="userLogin">
-        <input type="password" placeholder="Веедіть пароль"><br >
+        <input type="password" placeholder="Веедіть пароль" v-model="userPassword"><br >
         <div v-if='error' class="error">Неправильний логін або пароль</div>
-        <input type="button" id = "but" value="Вхід" @click='setCookies'>
-
+        <input type="button" id = "but" value="Вхід" @click='checkUser'>
       </form>
     </div>
   </div>
@@ -18,15 +17,36 @@
     name: 'Avtorization',
     data() {
       return {
-        userLogin: "",
-        error: false
+        userData: '',
+        error: false,
+        userLogin: '',
+        userPassword: '',
       }
 
     },
     methods: {
-      setCookies: function() {
-        localStorage.setItem("user", this.userLogin)
-        console.log(localStorage.getItem("user"))
+      checkUser: async function () {
+        let userInfo = {login: this.userLogin, password: this.userPassword}
+        const response = await fetch(`/api/checkUser`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(userInfo)
+          })
+          let resp = await response.json();
+          console.log(resp);
+          if (resp.length != 0) {
+            this.userData = resp;
+            window.location.href = "/index.html";
+
+            localStorage.login = this.userData[0].login;
+            localStorage.id = this.userData[0]._id;
+            localStorage.name = this.userData[0].name;
+            localStorage.surname = this.userData[0].surname;
+            localStorage.position = this.userData[0].position;
+
+          } else {
+            this.error = true
+          }
       }
     }
   }
@@ -37,6 +57,5 @@
     padding: 15px 0px;
     background: #f5d0ce;
     color: #6e2722;
-
   }
 </style>
