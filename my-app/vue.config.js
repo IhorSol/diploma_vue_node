@@ -27,6 +27,11 @@ module.exports = {
         entry: './src/entry/settings.js',
         template: './src/pages/settings.html',
         title: 'About-html from pages'
+      },
+      'avtoriz': {
+        entry: './src/entry/avtoriz.js',
+        template: './src/pages/avtoriz.html',
+        title: 'About-html from pages'
       }
     }
   }
