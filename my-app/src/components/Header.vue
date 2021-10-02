@@ -17,8 +17,8 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-// import '../js/main.js'
+
+import $ from 'jquery'
 
   export default {
     name: 'Header',
@@ -32,12 +32,7 @@
       cleanCookies: function() {
         localStorage.clear()
       }
-    }
-=======
-import $ from 'jquery'
-
-  export default {
-    name: 'Header',
+    },
     mounted() {
     function clock(){
       let date = new Date();
@@ -77,6 +72,5 @@ import $ from 'jquery'
     })
     // })(jQuery);
   }
->>>>>>> cebfc3c00260a16cd65038be479deab909c2c9f5
-  }
+}
 </script>
