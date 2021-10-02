@@ -27,7 +27,7 @@
         $(".form").removeClass("read_only");
         $(".set_task_form__name").attr("disabled", false);
       })
-      $("#edit_btn").on('click', function() {
+      $(".edit_btn").on('click', function() {
         $(".form_bg").addClass("flex");
         $("#set_task_form__asign_btn").text("Змінити");
       })
