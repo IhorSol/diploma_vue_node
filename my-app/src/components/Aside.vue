@@ -31,9 +31,9 @@
       </div>
     </div>
   </aside>
-  <script type="applicaton/javascript" defer src="../js/main.js"></script>
 </template>
 <script>
+// import '../js/main.js'
 
   export default {
     name: 'Aside',
