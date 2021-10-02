@@ -1,0 +1,74 @@
+header {
+  display: flex;
+  justify-content: space-around;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  // background: linear-gradient(90deg, rgba(136,102,221,0.8662815467984069) 0%, rgba(163,146,250,0.7122199221485469) 35%, rgba(153,137,249,0.6393907904958859) 62%, rgba(116,77,214,0.8130602582830007) 100%);
+  // background: linear-gradient(90deg, #A770EF, #CF8BF3, #FDB99B);
+  // background: linear-gradient(90deg, #be93c5, #7bc6cc);
+  // background: linear-gradient(90deg, #43cea2, #185a9d);
+  background: linear-gradient(90deg, #b993d6, #8ca6db);
+  padding: 18px;
+  max-height: 10%;
+  align-items: center;
+  color: $header-text-color;
+
+  .logo {
+    a {
+      color: $header-text-color;
+      font-size: 24px;
+      font-weight: 500;
+      text-decoration: none;
+      &:hover {color: darken($header-text-color, 10)}
+    }
+
+
+  }
+  .full-data {
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    div {
+      margin: 0 10px;
+    }
+    .time {
+      font-size: 40px;
+      font-weight: 200;
+    }
+    .day {
+      font-size: 30px;
+      font-weight: 500;
+    }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    position: relative;
+    top: 5px;
+
+    .user_photo {
+      padding: 30px;
+      border-radius: 50%;
+      background: #fff;
+      margin-right: 10px;
+    }
+    .user_name {
+      button {
+        padding: 3px 20px;
+        background: $user-logo-color;
+        border: 0;
+        border-radius: 5px;
+        color: $header-text-color;
+        cursor: pointer;
+
+        &:hover {
+          background: darken($user-logo-color, 10);
+          transition: 0.5s;
+        }
+      }
+    }
+  }
+}

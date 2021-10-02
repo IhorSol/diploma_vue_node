@@ -1,0 +1,88 @@
+.settings{
+  display: flex;
+  padding: 30px;
+}
+
+.settings_add_user {
+  width: 400px;
+
+
+  .add_user__form * {
+    display: block;
+  }
+  .add_user__form {
+    background: #f9f0ff;
+    padding: 40px;
+    padding-bottom: 20px;
+    border-radius: 10px;
+    h3 {
+      color: $title_color;
+      margin-bottom: 20px;
+    }
+    label {
+      font-size: 16px;
+      color: $main_text_color;
+      margin-bottom: 5px;
+    }
+    input {
+      @extend %inputs;
+      width: 300px;
+      border-color: #e6e6e6;
+      padding: 5px;
+      margin-bottom: 8px;
+    }
+    #add_user__btn {
+      @extend %btn;
+      margin-top: 20px;
+    }
+  }
+}
+.settings_users {
+  padding: 20px;
+  margin-left: 150px;
+
+  .settings_user_card {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+    padding: 10px 20px;
+    background: #fafafa;
+    margin: 0 20px 20px 0;
+    .settings_users__photo {
+      width: 100px;
+      height: 100px;
+      background: #ccc;
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+    .settings_users__info {
+      div {
+        color: $main_text_color;
+        margin-bottom: 5px;
+      }
+      .settings_user_name {
+        font-weight: bold;
+        color: #616161;
+      }
+      .settings_user_login, .settings_user_password {
+        font-style: italic;
+      }
+      .settings_user_delete_user{
+        margin-top: 10px;
+        font-size: 14px;
+        color: $main_text_color;
+        #del_user {
+          border: 0;
+          background: 0;
+          color: $main_text_color;
+          cursor: pointer;
+
+          &:hover {
+            color: $btn_color;
+          }
+        }
+      }
+    }
+  }
+}

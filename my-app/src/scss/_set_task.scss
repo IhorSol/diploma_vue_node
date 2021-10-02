@@ -1,0 +1,48 @@
+.form_bg {
+  height: 100%;
+  width: 100%;
+  background: rgba(40,40,40,0.7);
+  position: fixed;
+  top: 0px;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+.set_task_btn{
+  margin-bottom: 30px;
+  #set_task {
+    @extend %btn;
+    font-size: 18px;
+    padding: 10px 15px;
+  }
+}
+.tasks_asign {
+  padding: 40px 70px;
+  padding-top: 20px;
+    h2 {
+      color: $title_color;
+      margin-bottom: 50px;
+    }
+}
+
+.flex{
+  display: flex;
+}
+.asigned_tasks_part {
+
+}
+.asigned_tasks {
+  display: flex;
+  justify-content: space-between;
+  @extend %task;
+  }
+
+
+@each $status, $color in $colors {
+  .#{$status}-#{$new_class} {
+    background: $color;
+  }
+}

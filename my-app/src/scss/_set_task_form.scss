@@ -1,0 +1,96 @@
+.set_task_form{
+  width: 700px;
+  background: $set_task_form_bg;
+  @extend %borders;
+  padding: 20px;
+
+  form {
+    .set_task_form__header {
+      @extend %display;
+
+      h2 {color: $title_color}
+      .set_task_form__close_btn {
+        @extend %btn;
+        padding: 3px 5px;
+      }
+    }
+    .set_task_form__name {
+      width: 400px;
+      @extend %inputs;
+      padding: 5px;
+      margin: 15px 0;
+      text-indent: 5px;
+    }
+    .set_task_form__details {
+      @extend %display;
+      width: 500px;
+      margin: 10px 0;
+      span {
+        @extend %labels;
+      }
+      #deadline {
+        @extend %inputs;
+      }
+    }
+    .set_task_form__complication {
+      #complication {
+        @extend %inputs;
+      }
+    }
+    .set_task_form__description {
+      margin: 20px 0;
+      p {
+        color: darken($btn_color, 5);
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      textarea {
+        resize: none;
+        @extend %borders;
+        border-radius: 7px;
+        padding: 5px 10px;
+      }
+    }
+    .set_task_form__attach {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 20px;
+      span {
+        @extend %labels;
+      }
+      .set_task_form__attachent {
+        i {
+          color: #b3b3b3;
+          cursor: pointer;
+          &:hover {
+            color: $btn_color;
+          }
+        }
+      }
+
+    }
+
+    .set_task_form__performer {
+      span{
+        color: $btn_color;
+        font-weight: bold;
+        margin-right: 20px;
+      }
+      #performer {
+        @extend %inputs;
+        width: 100px;
+      }
+      margin-bottom: 30px;
+    }
+
+    .set_task_form__asign {
+      @extend %display;
+
+      #set_task_form__asign_btn {
+        @extend %btn;
+        font-weight: bold;
+      }
+    }
+
+  }
+}
