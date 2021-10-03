@@ -10,7 +10,7 @@
         <div class="asigned_task__body">
           <p class="asigned_task_text">{{ item.taskDescription }}</p>
           <div class="asigned_task__deadline"><i class="fas fa-calendar-week"></i> {{ item.deadline}}</div>
-          <div class="asigned_task__asigned-by"><i class="fas fa-user"></i>{{ item.creator}} </div>
+          <div class="asigned_task__asigned-by"><i class="fas fa-user"></i>{{ allUsers[item.performer-1].name}} </div>
           <div class="asigned_task__buttons">
             <button id="comment_btn"><i class="fas fa-comments"></i></button>
             <button class="edit_btn"><i class="fas fa-edit"></i></button>
@@ -32,6 +32,9 @@ import $ from 'jquery'
       return {
         allTasks: []
       }
+    },
+    props: {
+      allUsers: Array
     },
     created: function() {
       this.getAllTasks()
@@ -59,8 +62,8 @@ import $ from 'jquery'
     },
     methods: {
       getAllTasks: async function () {
-      const response = await fetch('/api/allTasks');
-      this.allTasks = await response.json(); //this.allTasks.push(await response.json());
+        const response = await fetch('/api/allTasks');
+        this.allTasks = await response.json();
       }
     }
   }

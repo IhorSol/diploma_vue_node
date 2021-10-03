@@ -1,10 +1,5 @@
 <template>
   <div class="settings_users">
-    <div>
-      <button @click="requestToApi">OK</button>
-      {{ usersAdmin }}
-
-    </div>
     <div class="settings_user_card" v-for="user in usersAdmin" v-bind:key="user._id">
       <div class="settings_users__photo"></div>
       <div class="settings_users__info">
@@ -31,12 +26,15 @@
         usersAdmin: []
       }
     },
+    created: function(){
+      this.showAllUsers();
+    },
     methods: {
-      requestToApi: async function () {
+      showAllUsers: async function () {
+        console.log('showLog from requestToApi');
         const response = await fetch('/api/allUsers');
         this.usersAdmin = await response.json();
-
       }
+    }
   }
-}
 </script>

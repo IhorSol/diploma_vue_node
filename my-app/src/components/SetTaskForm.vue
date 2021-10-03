@@ -27,7 +27,7 @@
         </div>
         <div class="set_task_form__description">
           <p>Опис завдання</p>
-          <textarea name="taskDescription" rows="8" cols="80"   v-bind:value='taskDescription'></textarea>
+          <textarea name="taskDescription" rows="8" cols="80" v-bind:value='taskDescription'></textarea>
         </div>
         <div class="set_task_form__attach">
           <span>Прикріпити</span>
@@ -39,19 +39,13 @@
         </div>
         <div class="set_task_form__performer">
           <span>Виконавець</span>
-          <select name="performer" id="performer"  v-bind:value='taskPerformer'> <!--v-for users in users -->
-            <option value="1">Ліля</option>
-            <option value="2">Ігорьок</option>
-            <option value="3">Мама</option>
-            <option value="4">Папа</option>
-            <option value="5">Джеська</option>
-            <option value="6">Джун</option>
-            <option value="7">Данка</option>
+          <select name="performer" id="performer" v-bind:value='taskPerformer'>
+            <option v-for="user in allUsers" v-bind:key="user._id" v-bind:value="user._id">{{user.name}}</option>
           </select>
         </div>
         <div class="set_task_form__asign">
             <div id="asign_notice"></div>
-            <button id="set_task_form__asign_btn" >Призначити</button>
+            <button id="set_task_form__asign_btn">Призначити</button>
         </div>
       </form>
   </div>
@@ -67,8 +61,11 @@
         taskComplexity: '',
         taskDescription: '',
         taskPerformer: '',
-        creator_id: localStorage.getItem("id")
+        creator_id: localStorage.getItem("id"),
       }
+    },
+    props: {
+      allUsers: Array
     }
   }
 </script>

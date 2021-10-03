@@ -8,9 +8,9 @@ module.exports = {
       }
     },
     pages: {
-      'index': {
-        entry: './src/entry/index.js',
-        template: './src/pages/index.html',
+      'main_page': { // index
+        entry: './src/entry/main_page.js',
+        template: './src/pages/main_page.html',
         title: 'Index-html from pages'
       },
       'my_tasks': {
@@ -28,7 +28,7 @@ module.exports = {
         template: './src/pages/settings.html',
         title: 'About-html from pages'
       },
-      'avtoriz': {
+      'index': { // avtoriz
         entry: './src/entry/avtoriz.js',
         template: './src/pages/avtoriz.html',
         title: 'About-html from pages'

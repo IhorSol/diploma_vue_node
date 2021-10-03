@@ -211,8 +211,12 @@ app.post('/api/contacts', urlencodedParser, function(req, res) {
 app.post('/api/createTask', urlencodedParser, function(req, res) {
   if (!req.body) return res.sendStatus(400);
   console.log(req.body);
-  addTaskPost(req);
-  return res.sendStatus(200);
+
+  async function callAddTaskPost(req){
+    await addTaskPost(req); //.then(res.redirect("/set_task.html")); //await addTaskPost();
+    res.redirect("/set_task.html")
+  }
+  callAddTaskPost(req)
 });
 
 // get all tasks from collection
@@ -250,7 +254,7 @@ app.post('/api/checkUser', urlencodedParser, function(req, res) {
 
   async function callCheckUser(reqBody){
     console.log('api/checkUser called !!!');
-    var checkedUser = await checkUser(reqBody); //await getAllTasks();
+    var checkedUser = await checkUser(reqBody);
     res.json(checkedUser);
     console.log(checkedUser);
     console.log('/api/checkUser - finished');
