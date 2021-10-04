@@ -2,7 +2,7 @@
   <div class="asigned_tasks_part">
     <h2>Призначені завдання</h2>
     <div class="asigned_tasks">
-      <div class="asigned_task" v-for="item in allTasks" v-bind:key="item._id">
+      <div class="asigned_task" v-for="item in tasksSetByMe" v-bind:key="item._id">
         <div class="asigned_task__header">
           <div class="asigned_task__complexity normal-complexity"></div>
           <div class="asigned_task__name"><h3>{{ item.title }} </h3></div>
@@ -30,14 +30,14 @@ import $ from 'jquery'
     name: 'AsignedTasks',
     data() {
       return {
-        allTasks: []
+        tasksSetByMe: []
       }
     },
     props: {
       allUsers: Array
     },
     created: function() {
-      this.getAllTasks()
+      this.getTasksSetByMe()
     },
     updated: function() {
       $(".edit_btn").on('click', function() {
@@ -61,10 +61,19 @@ import $ from 'jquery'
       })
     },
     methods: {
-      getAllTasks: async function () {
-        const response = await fetch('/api/allTasks');
-        this.allTasks = await response.json();
-      }
+      // getAllTasks: async function () {
+      //   const response = await fetch('/api/allTasks');
+      //   this.allTasks = await response.json();
+      // }
+      getTasksSetByMe: async function () {
+        let userId = {id: localStorage.id};
+        const response = await fetch(`/api/tasksSetByMe`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(userId)
+          })
+        this.tasksSetByMe = await response.json();
     }
   }
+}
 </script>

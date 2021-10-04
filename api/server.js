@@ -100,7 +100,7 @@ async function addTaskPost(req) { //insert user from form from TaskForm.vue
 
 }
 
-async function getAllTasks() {
+async function allTasksSetByMe(userIdObj) {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
   const client = new MongoClient(uri);
   let allTasks = [];
@@ -108,7 +108,7 @@ async function getAllTasks() {
   try {
     await client.connect();
     const collection = client.db("task_manager").collection("tasks");
-    allTasks = await collection.find({}).toArray(); // await collection.find({}).toArray()
+    allTasks = await collection.find({creator: userIdObj.id}).toArray(); // await collection.find({}).toArray()
     return allTasks;
 
   } catch (e) {
@@ -240,16 +240,25 @@ app.post('/api/createTask', urlencodedParser, function(req, res) {
   callAddTaskPost(req)
 });
 
-// get all tasks from collection
-app.get('/api/allTasks', (req, res) => {
-  async function callGetAllTasks(){
-    console.log('api/allTasks called !!!');
-    var allTasks = await getAllTasks(); //await getAllTasks();
-    res.json(allTasks);
-    console.log(allTasks);
-    console.log('app.get(/api/allTasks - finished');
+// get all tasks from collection //   important!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!****************
+app.post('/api/tasksSetByMe', (req, res) => {
+  // async function callGetAllTasks(){
+  //   console.log('api/allTasks called !!!');
+  //   var allTasks = await getAllTasks(); //await getAllTasks();
+  //   res.json(allTasks);
+  //   console.log(allTasks);
+  //   console.log('app.get(/api/allTasks - finished');
+  // }
+  // callGetAllTasks()
+  async function callTasksSetByMe(){
+    console.log('api/allMyTasks called !!!');
+    console.log(req.body);
+    var tasksSetByMe = await allTasksSetByMe(req.body); //await getAllMyTasks();
+    res.json(tasksSetByMe);
+    console.log(tasksSetByMe);
+    console.log('app.get(/api/allMyTasks - finished');
   }
-  callGetAllTasks()
+  callTasksSetByMe()
 });
 
 app.post('/api/updateTask', urlencodedParser, function(req, res) {
