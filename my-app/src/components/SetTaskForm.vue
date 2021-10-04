@@ -1,7 +1,7 @@
 <template>
   <div class="form_bg">
     <div class="set_task_form">
-      <form action="api/createTask" method="post">
+      <form action="api/createTask" method="post" class="form">
         <div class="set_task_form__header">
           <h2>Нове завдання</h2>
           <input name="creator" v-bind:value='creator_id' style="display:none">
@@ -45,13 +45,18 @@
         </div>
         <div class="set_task_form__asign">
             <div id="asign_notice"></div>
-            <button id="set_task_form__asign_btn">Призначити</button>
+            <button id="set_task_form__asign_btn" v-if='!edit'>Призначити</button>
+            <button id="set_task_form__asign_btn" v-else type="button" @click='showT'>Редагувати</button>
+            <!-- <button id="set_task_form__asign_btn" v-if type="button" @click='showT'>Done</button> -->
+
         </div>
       </form>
   </div>
 </div>
 </template>
 <script>
+  import { bus } from '../entry/set_task.js';
+
   export default {
     name: 'SetTaskForm',
     data() {
@@ -62,10 +67,38 @@
         taskDescription: '',
         taskPerformer: '',
         creator_id: localStorage.getItem("id"),
+        edit: false,
+        readOnly: false
       }
     },
+    created() {
+      bus.$on('editBtnClick', data => {
+        this.taskTitle = data.title;
+        this.taskDeadline = data.deadline;
+        this.taskComplexity = data.complication;
+        this.taskDescription = data.taskDescription;
+        this.taskPerformer = data.performer;
+        this.edit = data.edit;
+      })
+      bus.$on('showBtnClick', data => {
+        this.taskTitle = data.title;
+        this.taskDeadline = data.deadline;
+        this.taskComplexity = data.complication;
+        this.taskDescription = data.taskDescription;
+        this.taskPerformer = data.performer;
+        this.readOnly = data.readOnly;
+      })
+
+    },
+
     props: {
       allUsers: Array
+    },
+    methods: {
+      showT() {
+        console.log("OK");
+        this.edit = false;
+      }
     }
   }
 </script>
