@@ -162,6 +162,27 @@ async function updateTask(taskObj) {
 
 }
 
+// ------- get all current user tasks ------/
+async function allMyTasks(userIdObj) {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+  let allTasks = [];
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("tasks");
+    allTasks = await collection.find({performer: userIdObj.id}).toArray();
+    return allTasks;
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+
+}
+
+
 async function checkUser(userObj) {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
   const client = new MongoClient(uri);
@@ -247,6 +268,20 @@ app.post('/api/updateTask', urlencodedParser, function(req, res) {
   callUpdateTask(req.body)
 });
 
+// ---------- get all my tasks ----------//
+app.post('/api/myTasks', (req, res) => {
+  async function callGetMyTasks(){
+    console.log('api/allMyTasks called !!!');
+    console.log(req.body);
+    var myTasks = await allMyTasks(req.body); //await getAllMyTasks();
+    res.json(myTasks);
+    console.log(myTasks);
+    console.log('app.get(/api/allMyTasks - finished');
+  }
+  callGetMyTasks()
+});
+
+//------ check user while autorization -------//
 app.post('/api/checkUser', urlencodedParser, function(req, res) {
   if (!req.body) return res.sendStatus(400);
   console.log('/api/checkUser started');
