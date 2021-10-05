@@ -61,10 +61,6 @@ import $ from 'jquery'
       })
     },
     methods: {
-      // getAllTasks: async function () {
-      //   const response = await fetch('/api/allTasks');
-      //   this.allTasks = await response.json();
-      // }
       getTasksSetByMe: async function () {
         let userId = {id: localStorage.id};
         const response = await fetch(`/api/tasksSetByMe`, {

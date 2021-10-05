@@ -43,6 +43,7 @@
             localStorage.name = this.userData[0].name;
             localStorage.surname = this.userData[0].surname;
             localStorage.position = this.userData[0].position;
+            localStorage.isAdmin = this.userData[0].isAdmin;
 
           } else {
             this.error = true

@@ -48,6 +48,7 @@
             <button id="set_task_form__asign_btn">Призначити</button>
         </div>
       </form>
+      <div> Div for tasks item to modify: {{ taskObj }}</div>
   </div>
 </div>
 </template>
@@ -65,7 +66,8 @@
       }
     },
     props: {
-      allUsers: Array
+      allUsers: Array,
+      taskObj: Array
     }
   }
 </script>
