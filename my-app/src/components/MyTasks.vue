@@ -8,11 +8,17 @@
 <script>
 import SetTaskForm from './SetTaskForm.vue';
 import MyAsignedTasks from './MyAsignedTasks.vue';
+import $ from 'jquery'
 
 
 export default {
   name:'MyTasks',
-  components: { SetTaskForm, MyAsignedTasks }
+  components: { SetTaskForm, MyAsignedTasks },
+  mounted() {
+    $(".hide_menu").on('click', function() {
+      $(".aside-menu").toggleClass("show_more");
+    })
+  }
 
 }
 </script>

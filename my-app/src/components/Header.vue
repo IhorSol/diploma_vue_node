@@ -9,9 +9,9 @@
     <div class="user-info">
       <div class="user_photo"></div>
       <div class="user_name">
-        <button>{{ userName }}</button>
-        <button @click='cleanCookies'><a href='avtoriz.html'>Вийти</a></button>
+        {{ userName }}
       </div>
+      <button @click='cleanCookies'><a href='avtoriz.html'>Вийти</a></button>
     </div>
   </header>
 </template>

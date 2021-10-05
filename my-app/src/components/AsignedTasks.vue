@@ -4,7 +4,7 @@
     <div class="asigned_tasks">
       <div class="asigned_task" v-for="item in tasksSetByMe" v-bind:key="item._id">
         <div class="asigned_task__header">
-          <div class="asigned_task__complexity normal-complexity"></div>
+          <div class="asigned_task__complexity">{{ item.complication }}</div>
           <div class="asigned_task__name"><h3>{{ item.title }} </h3></div>
         </div>
         <div class="asigned_task__body">
@@ -46,6 +46,8 @@ import $ from 'jquery'
         $(".form_bg").addClass("flex");
         // $("#set_task_form__asign_btn").text("Змінити");
       })
+      this.complexityColor();
+
     },
     mounted() {
       $("#set_task").on('click', function() {
@@ -61,6 +63,9 @@ import $ from 'jquery'
         $(".form_bg").addClass("flex");
         // $("#set_task_form__asign_btn").text("Змінити");
       })
+
+      this.complexityColor();
+
     },
     methods: {
       // getAllTasks: async function () {
@@ -79,7 +84,38 @@ import $ from 'jquery'
             body: JSON.stringify(userId)
           })
         this.tasksSetByMe = await response.json();
+    },
+    complexityColor: function() {
+      var num = '';
+      var arr = $(".asigned_task__complexity");
+      // console.log($(".asigned_task__complexity").text()[0]);
+      arr.each(function(i) {
+        num = arr.text()[i];
+        switch(num) {
+          case '1':
+            arr.eq(i).addClass("light-complexity");
+            break;
+          case '2':
+            arr.eq(i).addClass("normal-complexity");
+            break;
+          case '3':
+            arr.eq(i).addClass("good-complexity");
+            break;
+          case '4':
+            arr.eq(i).addClass("medium-complexity");
+            break;
+          case '5':
+            arr.eq(i).addClass("strong-complexity");
+            break;
+          case '6':
+            arr.eq(i).addClass("hard-complexity");
+            break;
+          }
+      });
     }
   }
 }
 </script>
+<style>
+  /* .asigned_task__complexity {font-size: 0px;} */
+</style>
