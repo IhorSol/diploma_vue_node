@@ -13,7 +13,7 @@
           <div class="asigned_task__asigned-by"><i class="fas fa-user"></i>{{ allUsers[item.performer-1].name}} </div>
           <div class="asigned_task__buttons">
             <button id="comment_btn"><i class="fas fa-comments"></i></button>
-            <button class="edit_btn"><i class="fas fa-edit"></i></button>
+            <button class="edit_btn" @click='transferDataToForm(item)'><i class="fas fa-edit"></i></button>
             <button id="delete_btn"><i class="fas fa-trash-alt"></i></button>
 
           </div>
@@ -24,13 +24,15 @@
   </div>
 </template>
 <script>
+import { bus } from '../entry/set_task.js';
 import $ from 'jquery'
 
   export default {
     name: 'AsignedTasks',
     data() {
       return {
-        tasksSetByMe: []
+        tasksSetByMe: [],
+        edit: true
       }
     },
     props: {
@@ -42,7 +44,7 @@ import $ from 'jquery'
     updated: function() {
       $(".edit_btn").on('click', function() {
         $(".form_bg").addClass("flex");
-        $("#set_task_form__asign_btn").text("Змінити");
+        // $("#set_task_form__asign_btn").text("Змінити");
       })
     },
     mounted() {
@@ -57,10 +59,21 @@ import $ from 'jquery'
       })
       $(".edit_btn").on('click', function() {
         $(".form_bg").addClass("flex");
-        $("#set_task_form__asign_btn").text("Змінити");
+        // $("#set_task_form__asign_btn").text("Змінити");
       })
     },
     methods: {
+<<<<<<< HEAD
+=======
+      // getAllTasks: async function () {
+      //   const response = await fetch('/api/allTasks');
+      //   this.allTasks = await response.json();
+      // }
+      transferDataToForm: function(item) {
+        item.edit = true;
+        bus.$emit('editBtnClick', item, this.edit);
+      },
+>>>>>>> 49d4f6bdc8f4ab9f6b85bcd1d553080af3611afb
       getTasksSetByMe: async function () {
         let userId = {id: localStorage.id};
         const response = await fetch(`/api/tasksSetByMe`, {
