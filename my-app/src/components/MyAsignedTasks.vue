@@ -86,9 +86,16 @@ export default {
       item.readOnly = true;
       bus.$emit('showBtnClick', item, this.edit);
     },
-    completeTask: function(itemId){
+    completeTask: async function(itemId){
       console.log('complete task. Task id - ' + itemId);
-      // document.location.reload()
+      let taskToUpdate = { "_id": itemId}
+
+      await fetch(`/api/finishTask`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(taskToUpdate)
+        })
+      document.location.reload()
     },
     complexityColor: function() {
       var num = '';

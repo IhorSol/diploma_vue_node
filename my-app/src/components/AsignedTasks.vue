@@ -2,8 +2,14 @@
   <div class="asigned_tasks_part">
     <h2>Призначені завдання</h2>
     <div class="asigned_tasks">
+
+      <h2>Finished task - {{ finihsedTaskCounter }} </h2> <!-- finished task counter -->
+
       <div class="asigned_task" v-for="item in tasksSetByMe" v-bind:key="item._id">
         <div class="asigned_task__header">
+
+          <p>Task status - {{ item.status }}</p>  <!-- task status for tests -->
+          
           <div class="asigned_task__complexity">{{ item.complication }}</div>
           <div class="asigned_task__name"><h3>{{ item.title }} </h3></div>
         </div>
@@ -34,7 +40,8 @@ import $ from 'jquery'
     data() {
       return {
         tasksSetByMe: [],
-        edit: true
+        edit: true,
+        // finihsedNotAccepted: finihsedTaskCounter()
       }
     },
     props: {
@@ -49,7 +56,6 @@ import $ from 'jquery'
         // $("#set_task_form__asign_btn").text("Змінити");
       })
       this.complexityColor();
-
     },
     mounted() {
       $("#set_task").on('click', function() {
@@ -68,6 +74,17 @@ import $ from 'jquery'
 
       this.complexityColor();
 
+    },
+    computed: {
+      finihsedTaskCounter: function(){
+        let counter = 0;
+        this.tasksSetByMe.forEach((item) => {
+          if (item.status === 'finished') {
+            counter ++
+          }
+        });
+        return counter
+      }
     },
     methods: {
       transferDataToForm: function(item) {

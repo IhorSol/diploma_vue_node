@@ -40,23 +40,14 @@
         </div>
         <div class="set_task_form__performer">
           <span>Виконавець</span>
-<<<<<<< HEAD
           <select name="performer" id="performer" v-model='taskPerformer'>
-=======
-          <select name="performer" id="performer" v-bind:value='taskPerformer' >
->>>>>>> dae94b4193987aa60a8d42726b49a2c6803b50f4
             <option v-for="user in allUsers" v-bind:key="user._id" v-bind:value="user._id">{{user.name}}</option>
           </select>
         </div>
         <div class="set_task_form__asign">
             <div id="asign_notice"></div>
-<<<<<<< HEAD
             <button id="set_task_form__asign_btn" v-if='!edit'>Призначити</button>
             <button id="set_task_form__edit_btn" v-else type="button" @click='editTask' onclick="event.preventDefault()">Редагувати</button>
-=======
-            <button id="set_task_form__asign_btn" v-if='!edit' >Призначити</button>
-            <button id="set_task_form__asign_btn" v-else type="button" @click='showT' >Редагувати</button>
->>>>>>> dae94b4193987aa60a8d42726b49a2c6803b50f4
             <!-- <button id="set_task_form__asign_btn" v-if type="button" @click='showT'>Done</button> -->
 
         </div>

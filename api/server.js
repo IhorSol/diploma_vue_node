@@ -108,7 +108,10 @@ async function allTasksSetByMe(userIdObj) {
   try {
     await client.connect();
     const collection = client.db("task_manager").collection("tasks");
-    allTasks = await collection.find({creator: userIdObj.id, status: 'new'}).toArray(); // await collection.find({}).toArray()
+    // allTasks = await collection.find({creator: userIdObj.id, status: 'new', }).toArray();
+    allTasks = await collection.find({creator: userIdObj.id, $or: [ { status: 'new' }, { status: 'finished' } ] }).toArray();
+    
+    // $or: [ { <expression1> }, { <expression2> }, ... , { <expressionN> } ]
     return allTasks;
 
   } catch (e) {

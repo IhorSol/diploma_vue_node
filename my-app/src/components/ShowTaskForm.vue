@@ -101,7 +101,7 @@
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(taskToUpdate)
           })
-        // document.location.reload()
+        document.location.reload()
       }
 
     },
