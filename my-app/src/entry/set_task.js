@@ -17,4 +17,4 @@ new Vue({
 
 new Vue({
   render: h => h(SetTask),
-}).$mount('#SetTask')
+}).$mount('#setTask')
