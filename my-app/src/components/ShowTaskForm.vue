@@ -1,7 +1,7 @@
 <template>
   <div class="form_bg">
     <div class="set_task_form">
-      <p>Set task form</p>
+      <p>Show tast form</p>
       <form action="api/createTask" method="post" class="form">
         <div class="set_task_form__header">
           <h2>Нове завдання</h2>
@@ -46,10 +46,7 @@
         </div>
         <div class="set_task_form__asign">
             <div id="asign_notice"></div>
-            <button id="set_task_form__asign_btn" v-if='!edit'>Призначити</button>
-            <button id="set_task_form__edit_btn" v-else type="button" @click='editTask' onclick="event.preventDefault()">Редагувати</button>
-            <!-- <button id="set_task_form__asign_btn" v-if type="button" @click='showT'>Done</button> -->
-
+            <button id="set_task_form__asign_btn" @click='completeTask' onclick="event.preventDefault()">Виконано</button>
         </div>
       </form>
       <!-- <div> Div for tasks item to modify: {{ taskObj }}</div> -->
@@ -57,11 +54,11 @@
 </div>
 </template>
 <script>
-  import { bus } from '../entry/set_task.js';
+  import { bus } from '../entry/my_tasks.js';
   import $ from 'jquery'
 
   export default {
-    name: 'SetTaskForm',
+    name: 'ShowTaskForm',
     data() {
       return {
         taskId: '',
@@ -76,14 +73,14 @@
       }
     },
     created() {
-      bus.$on('editBtnClick', data => {
-        this.taskId = data._id,
+      bus.$on('showBtnClick', data => {
         this.taskTitle = data.title;
         this.taskDeadline = data.deadline;
         this.taskComplexity = data.complication;
         this.taskDescription = data.taskDescription;
         this.taskPerformer = data.performer;
-        this.edit = data.edit;
+        this.readOnly = data.readOnly;
+        this.taskId = data._id
       })
     },
     updated() {
@@ -95,22 +92,18 @@
       allUsers: Array
     },
     methods: {
-      editTask: async function(){
-        this.edit = false;
-        let taskToUpdate = { "_id": this.taskId, "creator": this.creator_id, "title": this.taskTitle, "deadline": this.taskDeadline,
-         "complication": this.taskComplexity, "taskDescription": this.taskDescription, "attachment": "", "performer": this.taskPerformer}
-        console.log(taskToUpdate);
+      completeTask: async function(){
+        console.log('complete task. Task id - ' + this.taskId);
+        let taskToUpdate = { "_id": this.taskId}
 
-        // const response =
-        await fetch(`/api/updateTask`, {
+        await fetch(`/api/finishTask`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(taskToUpdate)
           })
+        // document.location.reload()
+      }
 
-          // console.log(response);
-          document.location.reload()
-      },
-    }
+    },
   }
 </script>

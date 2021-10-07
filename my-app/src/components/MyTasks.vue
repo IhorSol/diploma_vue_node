@@ -1,19 +1,18 @@
 <template lang="html">
   <div class="my_tasks_part">
-    <SetTaskForm v-bind:allUsers="allUsersParent"/>
+    <ShowTaskForm/>
     <MyAsignedTasks></MyAsignedTasks>
   </div>
 </template>
 
 <script>
-import SetTaskForm from './SetTaskForm.vue';
+import ShowTaskForm from './ShowTaskForm.vue';
 import MyAsignedTasks from './MyAsignedTasks.vue';
 import $ from 'jquery'
 
-
 export default {
   name:'MyTasks',
-  components: { SetTaskForm, MyAsignedTasks },
+  components: { ShowTaskForm, MyAsignedTasks}, // SetTaskForm },
   mounted() {
     $(".hide_menu").on('click', function() {
       $(".aside-menu").toggleClass("show_more");

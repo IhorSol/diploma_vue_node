@@ -14,7 +14,7 @@
         <button id="btn_more">Детальніше</button> -->
         <button id="comment_btn"><i class="fas fa-comment-dots"></i></button>
         <button class="show_btn" @click='transferDataToForm(item)'><i class="fas fa-eye"></i></button>
-        <button id="done_btn"><i class="far fa-check-circle"></i></button>
+        <button id="done_btn" @click='completeTask(item._id)'><i class="far fa-check-circle"></i></button>
       </div>
     </div>
   </div>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { bus } from '../entry/set_task.js';
+import { bus } from '../entry/my_tasks.js';
 import $ from 'jquery'
 
 export default {
@@ -41,12 +41,10 @@ export default {
   updated: function() {
     $(".show_btn").on('click', function() {
       $(".form_bg").addClass("flex");
-      // $("#set_task_form__asign_btn").text("Bиконано");
       $(".form").addClass("read_only");
       $(".set_task_form__name").attr("disabled", true);
     })
     this.complexityColor();
-    // $(".asigned_task__complexity").addClass("good-complexity");
 
   },
   mounted() {
@@ -88,10 +86,13 @@ export default {
       item.readOnly = true;
       bus.$emit('showBtnClick', item, this.edit);
     },
+    completeTask: function(itemId){
+      console.log('complete task. Task id - ' + itemId);
+      // document.location.reload()
+    },
     complexityColor: function() {
       var num = '';
       var arr = $(".asigned_task__complexity");
-      // console.log($(".asigned_task__complexity").text()[0]);
       arr.each(function(i) {
         num = arr.text()[i];
         switch(num) {

@@ -23,16 +23,12 @@ async function main() {  // first DB function. Get users drom base -> findUsers(
 
   try {
     await client.connect();
-    // await addUser(client);
-    // await findUsers(client);
   } catch (e) {
     console.error(e);
   } finally {
     await client.close();
   }
 }
-
-// main().catch(console.error);
 
 
 async function findUsers(client){ // get all users drom DB
@@ -78,7 +74,8 @@ async function addUserPost(req) { //insert user from form from AddUserForm.vue
 
 }
 
-async function addTaskPost(req) { //insert user from form from TaskForm.vue
+//---------- запрос в базу на додавання задачі початок ----------//
+async function addTaskPost(req) {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
   const client = new MongoClient(uri);
   const taskToAdd = req.body;
@@ -86,9 +83,11 @@ async function addTaskPost(req) { //insert user from form from TaskForm.vue
   try {
     await client.connect();
     const collection = client.db("task_manager").collection("tasks");
-    //user ID based on number of docs in collection "tasks"
     taskToAdd._id = await collection.countDocuments() + 1;
-    taskToAdd.status = 'new';
+    taskToAdd.status = 'new'; // до задачі додається статус "new"
+    taskToAdd.isLooked = false; // чи задача переглянута виконвцем
+    taskToAdd.isAccepted = false; // чи задача прийнята постановником
+
     const taskArr = await collection.insertOne(taskToAdd);
     console.log(taskArr);
 
@@ -99,6 +98,7 @@ async function addTaskPost(req) { //insert user from form from TaskForm.vue
   }
 
 }
+//---------- запрос в базу на додавання задачі кінець ----------//
 
 async function allTasksSetByMe(userIdObj) {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
@@ -108,7 +108,7 @@ async function allTasksSetByMe(userIdObj) {
   try {
     await client.connect();
     const collection = client.db("task_manager").collection("tasks");
-    allTasks = await collection.find({creator: userIdObj.id}).toArray(); // await collection.find({}).toArray()
+    allTasks = await collection.find({creator: userIdObj.id, status: 'new'}).toArray(); // await collection.find({}).toArray()
     return allTasks;
 
   } catch (e) {
@@ -142,7 +142,6 @@ async function getAllUsers() {
 async function updateTask(taskObj) {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
   const client = new MongoClient(uri);
-  let allTasks = [];
 
   console.log('Log from updateTask. Inc obj');
   console.log(taskObj);
@@ -161,8 +160,51 @@ async function updateTask(taskObj) {
 }
 // ----------- task update end ---------//
 
+// ----------- set task status is Finished start ---------//
+async function setTaskFinished(taskObj) {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
 
-// ------- get all current user tasks ------/
+  console.log('Log from updateTask. Inc obj');
+  console.log(taskObj);
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("tasks");
+    await collection.updateOne({_id: taskObj._id}, {$set: {status: "finished"}});
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+}
+// ----------- set task status is Finished end ---------//
+
+//------------ delete task start -------//
+async function deleteTask(taskObj) {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+
+  console.log('Log from delete task. Inc obj');
+  console.log(taskObj);
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("tasks");
+    await collection.deleteOne({_id: taskObj.id});
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+
+}
+//------------ delete task end -------//
+
+
+// ------- get all current user tasks with NEW status ------/
 async function allMyTasks(userIdObj) {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
   const client = new MongoClient(uri);
@@ -171,7 +213,7 @@ async function allMyTasks(userIdObj) {
   try {
     await client.connect();
     const collection = client.db("task_manager").collection("tasks");
-    allTasks = await collection.find({performer: userIdObj.id}).toArray();
+    allTasks = await collection.find({performer: userIdObj.id, status: 'new'}).toArray();
     return allTasks;
 
   } catch (e) {
@@ -244,12 +286,12 @@ app.post('/api/createTask', urlencodedParser, function(req, res) {
 app.post('/api/tasksSetByMe', (req, res) => {
 
   async function callTasksSetByMe(){
-    console.log('api/allMyTasks called !!!');
+    console.log('api/tasksSetByMe called !!!');
     console.log(req.body);
     var tasksSetByMe = await allTasksSetByMe(req.body);
     res.json(tasksSetByMe);
     console.log(tasksSetByMe);
-    console.log('app.get(/api/allMyTasks - finished');
+    console.log('/api/tasksSetByMe - finished');
   }
   callTasksSetByMe()
 });
@@ -273,19 +315,52 @@ app.post('/api/updateTask', urlencodedParser, function(req, res) {
 });
 // ------------ task update end ---------------//
 
+// ------------ set task finished start ---------------//
+app.post('/api/finishTask', urlencodedParser, function(req, res) {
+  if (!req.body) return res.sendStatus(400);
+  console.log('/api/finishTask receiced');
+  console.log(req.body);
+  console.log(req.body._id);
 
-// ---------- get all my tasks ----------//
+  async function callSetTaskFinished(reqBody){
+    console.log('api/finishTask called !!!');
+
+    await setTaskFinished(reqBody);
+    res.sendStatus(200);
+    console.log('/api/updateTask - finished');
+  }
+  callSetTaskFinished(req.body)
+
+});
+// ------------ set task finished end ---------------//
+
+// ---------- get all my tasks started----------//
 app.post('/api/myTasks', (req, res) => {
   async function callGetMyTasks(){
-    console.log('api/allMyTasks called !!!');
+    console.log('api/myTasks called !!!');
     console.log(req.body);
     var myTasks = await allMyTasks(req.body); //await getAllMyTasks();
     res.json(myTasks);
+
     console.log(myTasks);
-    console.log('app.get(/api/allMyTasks - finished');
+    console.log('api/myTasks called - finished');
   }
   callGetMyTasks()
 });
+// ---------- get all my tasks finifshed----------//
+
+// ---------- delete task started --------------//
+app.post('/api/deleteTask', (req, res) => {
+  async function callDeleteTask(){
+    console.log('api/deleteTask - called !!!');
+    console.log(req.body);
+    await deleteTask(req.body);
+    res.sendStatus(200);
+    console.log('api/deleteTask - finished !!!');
+  }
+  callDeleteTask()
+});
+// ---------- delete task finihsed -------------//
 
 //------ check user while autorization -------//
 app.post('/api/checkUser', urlencodedParser, function(req, res) {
