@@ -20,7 +20,9 @@
         </div>
 
       </div>
+
     </div>
+
   </div>
 </template>
 <script>
@@ -117,5 +119,7 @@ import $ from 'jquery'
 }
 </script>
 <style>
-  /* .asigned_task__complexity {font-size: 0px;} */
+  .asigned_tasks {
+    flex-wrap: wrap;
+  }
 </style>

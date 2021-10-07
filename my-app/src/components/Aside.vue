@@ -11,17 +11,17 @@
         <p class="menu_item">Мої завдання</p>
         </a>
       </div>
-      <div class="colleages"><a href="#">
+      <div class="colleages"><a href="users.html">
         <i class="fas fa-user-friends"></i>
         <p class="menu_item">Працівники</p>
         </a>
       </div>
-      <div class="news"><a href="#">
+      <div class="news"><a href="news.html">
         <i class="fas fa-newspaper"></i>
         <p class="menu_item">Новини</p>
         </a>
       </div>
-      <div class="add_user"><a href="settings.html">
+      <div class="add_user" v-show="isAdmin"><a href="settings.html">
         <i class="fas fa-user-plus"></i>
         <p class="menu_item">Додати користувача</p>
         </a>
@@ -37,6 +37,11 @@ import $ from 'jquery'
 
   export default {
     name: 'Aside',
+    data() {
+      return {
+        isAdmin: localStorage.getItem("isAdmin")
+      }
+    },
     mounted() {
       $(".hide_menu").on('click', function() {
         $(".aside-menu").toggleClass("show_more");

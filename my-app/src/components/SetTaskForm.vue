@@ -30,7 +30,7 @@
           <textarea name="taskDescription" rows="8" cols="80" v-bind:value='taskDescription'></textarea>
         </div>
         <div class="set_task_form__attach">
-          <span>Прикріпити</span>
+          <span>Вкладення</span>
           <div class="set_task_form__attachent">
             <i class="fas fa-paperclip"></i>
               <input type="file" name="attachment">
@@ -39,14 +39,14 @@
         </div>
         <div class="set_task_form__performer">
           <span>Виконавець</span>
-          <select name="performer" id="performer" v-bind:value='taskPerformer'>
+          <select name="performer" id="performer" v-bind:value='taskPerformer' >
             <option v-for="user in allUsers" v-bind:key="user._id" v-bind:value="user._id">{{user.name}}</option>
           </select>
         </div>
         <div class="set_task_form__asign">
             <div id="asign_notice"></div>
-            <button id="set_task_form__asign_btn" v-if='!edit'>Призначити</button>
-            <button id="set_task_form__asign_btn" v-else type="button" @click='showT'>Редагувати</button>
+            <button id="set_task_form__asign_btn" v-if='!edit' >Призначити</button>
+            <button id="set_task_form__asign_btn" v-else type="button" @click='showT' >Редагувати</button>
             <!-- <button id="set_task_form__asign_btn" v-if type="button" @click='showT'>Done</button> -->
 
         </div>
