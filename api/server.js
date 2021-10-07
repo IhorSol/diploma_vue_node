@@ -138,6 +138,7 @@ async function getAllUsers() {
 
 }
 
+// ----------- task update start ---------//
 async function updateTask(taskObj) {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
   const client = new MongoClient(uri);
@@ -145,14 +146,11 @@ async function updateTask(taskObj) {
 
   console.log('Log from updateTask. Inc obj');
   console.log(taskObj);
-  console.log(taskObj.taskDescription);
 
   try {
     await client.connect();
     const collection = client.db("task_manager").collection("tasks");
-    await collection.updateOne({_id: taskObj._id}, {$set: {taskDescription: taskObj.taskDescription}}); // await collection.find({}).toArray()
-    allTasks = await collection.find({}).toArray();
-    return allTasks;
+    await collection.replaceOne({_id: taskObj._id}, taskObj);
 
   } catch (e) {
     console.error(e);
@@ -161,6 +159,8 @@ async function updateTask(taskObj) {
   }
 
 }
+// ----------- task update end ---------//
+
 
 // ------- get all current user tasks ------/
 async function allMyTasks(userIdObj) {
@@ -234,26 +234,19 @@ app.post('/api/createTask', urlencodedParser, function(req, res) {
   console.log(req.body);
 
   async function callAddTaskPost(req){
-    await addTaskPost(req); //.then(res.redirect("/set_task.html")); //await addTaskPost();
+    await addTaskPost(req);
     res.redirect("/set_task.html")
   }
   callAddTaskPost(req)
 });
 
-// get all tasks from collection //   important!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!****************
+// get all tasks from collection //
 app.post('/api/tasksSetByMe', (req, res) => {
-  // async function callGetAllTasks(){
-  //   console.log('api/allTasks called !!!');
-  //   var allTasks = await getAllTasks(); //await getAllTasks();
-  //   res.json(allTasks);
-  //   console.log(allTasks);
-  //   console.log('app.get(/api/allTasks - finished');
-  // }
-  // callGetAllTasks()
+
   async function callTasksSetByMe(){
     console.log('api/allMyTasks called !!!');
     console.log(req.body);
-    var tasksSetByMe = await allTasksSetByMe(req.body); //await getAllMyTasks();
+    var tasksSetByMe = await allTasksSetByMe(req.body);
     res.json(tasksSetByMe);
     console.log(tasksSetByMe);
     console.log('app.get(/api/allMyTasks - finished');
@@ -261,6 +254,7 @@ app.post('/api/tasksSetByMe', (req, res) => {
   callTasksSetByMe()
 });
 
+// ------------ task update start ---------------//
 app.post('/api/updateTask', urlencodedParser, function(req, res) {
   if (!req.body) return res.sendStatus(400);
   console.log('/api/updateTask receiced');
@@ -269,13 +263,16 @@ app.post('/api/updateTask', urlencodedParser, function(req, res) {
 
   async function callUpdateTask(reqBody){
     console.log('api/updateTask called !!!');
-    var allTasks = await updateTask(reqBody); //await getAllTasks();
-    res.json(allTasks);
-    console.log(allTasks);
+
+    await updateTask(reqBody);
+    res.sendStatus(200);
     console.log('/api/updateTask - finished');
   }
   callUpdateTask(req.body)
+
 });
+// ------------ task update end ---------------//
+
 
 // ---------- get all my tasks ----------//
 app.post('/api/myTasks', (req, res) => {

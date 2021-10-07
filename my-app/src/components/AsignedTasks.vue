@@ -63,8 +63,6 @@ import $ from 'jquery'
       })
     },
     methods: {
-<<<<<<< HEAD
-=======
       // getAllTasks: async function () {
       //   const response = await fetch('/api/allTasks');
       //   this.allTasks = await response.json();
@@ -73,7 +71,6 @@ import $ from 'jquery'
         item.edit = true;
         bus.$emit('editBtnClick', item, this.edit);
       },
->>>>>>> 49d4f6bdc8f4ab9f6b85bcd1d553080af3611afb
       getTasksSetByMe: async function () {
         let userId = {id: localStorage.id};
         const response = await fetch(`/api/tasksSetByMe`, {

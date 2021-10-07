@@ -7,15 +7,15 @@
           <input name="creator" v-bind:value='creator_id' style="display:none">
           <button class="set_task_form__close_btn" type="reset">X</button>
         </div>
-        <input type="text" class="set_task_form__name" placeholder="Назва задачі" name="title"  v-bind:value='taskTitle'>
+        <input type="text" class="set_task_form__name" placeholder="Назва задачі" name="title"  v-model='taskTitle'>
         <div class="set_task_form__details">
           <div class="set_task_form__deadline">
             <span>Термін</span>
-            <input type="date" id="deadline" name="deadline"  v-bind:value='taskDeadline'>
+            <input type="date" id="deadline" name="deadline"  v-model='taskDeadline'>
           </div>
           <div class="set_task_form__complication">
             <span>Складність</span>
-            <select name="complication" id="complication" v-bind:value='taskComplexity'>
+            <select name="complication" id="complication" v-model='taskComplexity'>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -27,7 +27,7 @@
         </div>
         <div class="set_task_form__description">
           <p>Опис завдання</p>
-          <textarea name="taskDescription" rows="8" cols="80" v-bind:value='taskDescription'></textarea>
+          <textarea name="taskDescription" rows="8" cols="80" v-model='taskDescription'></textarea>
         </div>
         <div class="set_task_form__attach">
           <span>Прикріпити</span>
@@ -39,29 +39,31 @@
         </div>
         <div class="set_task_form__performer">
           <span>Виконавець</span>
-          <select name="performer" id="performer" v-bind:value='taskPerformer'>
+          <select name="performer" id="performer" v-model='taskPerformer'>
             <option v-for="user in allUsers" v-bind:key="user._id" v-bind:value="user._id">{{user.name}}</option>
           </select>
         </div>
         <div class="set_task_form__asign">
             <div id="asign_notice"></div>
             <button id="set_task_form__asign_btn" v-if='!edit'>Призначити</button>
-            <button id="set_task_form__asign_btn" v-else type="button" @click='showT'>Редагувати</button>
+            <button id="set_task_form__edit_btn" v-else type="button" @click='editTask' onclick="event.preventDefault()">Редагувати</button>
             <!-- <button id="set_task_form__asign_btn" v-if type="button" @click='showT'>Done</button> -->
 
         </div>
       </form>
-      <div> Div for tasks item to modify: {{ taskObj }}</div>
+      <!-- <div> Div for tasks item to modify: {{ taskObj }}</div> -->
   </div>
 </div>
 </template>
 <script>
   import { bus } from '../entry/set_task.js';
+  import $ from 'jquery'
 
   export default {
     name: 'SetTaskForm',
     data() {
       return {
+        taskId: '',
         taskTitle: '',
         taskDeadline: '',
         taskComplexity: '',
@@ -69,11 +71,13 @@
         taskPerformer: '',
         creator_id: localStorage.getItem("id"),
         edit: false,
-        readOnly: false
+        readOnly: false,
+        // taskObj: []
       }
     },
     created() {
       bus.$on('editBtnClick', data => {
+        this.taskId = data._id,
         this.taskTitle = data.title;
         this.taskDeadline = data.deadline;
         this.taskComplexity = data.complication;
@@ -91,20 +95,30 @@
       })
 
     },
-
+    updated() {
+      $("#set_task_form__edit_btn").on('click', function() {
+        $(".form_bg").removeClass("flex");
+      })
+    },
     props: {
-<<<<<<< HEAD
-      allUsers: Array,
-      taskObj: Array
-=======
       allUsers: Array
     },
     methods: {
-      showT() {
-        console.log("OK");
+      editTask: async function(){
         this.edit = false;
-      }
->>>>>>> 49d4f6bdc8f4ab9f6b85bcd1d553080af3611afb
+        let taskToUpdate = { "_id": this.taskId, "creator": this.creator_id, "title": this.taskTitle, "deadline": this.taskDeadline,
+         "complication": this.taskComplexity, "taskDescription": this.taskDescription, "attachment": "", "performer": this.taskPerformer}
+        console.log(taskToUpdate);
+
+        const response = await fetch(`/api/updateTask`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(taskToUpdate)
+          })
+
+          console.log(response);
+          document.location.reload()
+      },
     }
   }
 </script>
