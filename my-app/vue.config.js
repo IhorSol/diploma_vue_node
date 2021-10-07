@@ -32,6 +32,17 @@ module.exports = {
         entry: './src/entry/avtoriz.js',
         template: './src/pages/avtoriz.html',
         title: 'About-html from pages'
-      }
+      },
+      'news': {
+        entry: './src/entry/news.js',
+        template: './src/pages/news.html',
+        title: 'About-html from pages'
+      },
+      'users': { 
+        entry: './src/entry/users.js',
+        template: './src/pages/users.html',
+        title: 'About-html from pages'
+      },
+
     }
   }
