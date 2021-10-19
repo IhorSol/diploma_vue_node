@@ -1,6 +1,7 @@
 <template>
   <div class="main-part">
     <SetTaskForm v-bind:allUsers="allUsersParent"/>
+    <SetTaskCommentsForm/>
     <div class="tasks_asign">
       <div class="set_task_btn">
         <button id="set_task">Призначити завдання</button>
@@ -12,6 +13,7 @@
 <script>
   import SetTaskForm from './SetTaskForm.vue'
   import AsignedTasks from './AsignedTasks.vue'
+  import SetTaskCommentsForm from './SetTaskCommentsForm.vue';
   import $ from 'jquery'
 
   export default {
@@ -21,7 +23,7 @@
         allUsersParent: []
       }
     },
-    components: { SetTaskForm, AsignedTasks},
+    components: { SetTaskForm, AsignedTasks, SetTaskCommentsForm},
     created: function() {
       this.showAllUsers()
     },

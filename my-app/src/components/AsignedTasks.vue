@@ -1,15 +1,14 @@
 <template>
   <div class="asigned_tasks_part">
     <h2>Призначені завдання</h2>
+    <h2>Finished task - {{ finihsedTaskCounter }} </h2> <!-- finished task counter -->
     <div class="asigned_tasks">
-
-      <h2>Finished task - {{ finihsedTaskCounter }} </h2> <!-- finished task counter -->
 
       <div class="asigned_task" v-for="item in tasksSetByMe" v-bind:key="item._id">
         <div class="asigned_task__header">
 
           <p>Task status - {{ item.status }}</p>  <!-- task status for tests -->
-          
+
           <div class="asigned_task__complexity">{{ item.complication }}</div>
           <div class="asigned_task__name"><h3>{{ item.title }} </h3></div>
         </div>
@@ -18,7 +17,7 @@
           <div class="asigned_task__deadline"><i class="fas fa-calendar-week"></i> {{ item.deadline}}</div>
           <div class="asigned_task__asigned-by"><i class="fas fa-user"></i>{{ allUsers[item.performer-1].name}} </div>
           <div class="asigned_task__buttons">
-            <button id="comment_btn"><i class="fas fa-comments"></i></button>
+            <button id="comment_btn" @click='transferDataToCommentForm(item)'><i class="fas fa-comments"></i></button>
             <button class="edit_btn" @click='transferDataToForm(item)'><i class="fas fa-edit"></i></button>
             <button id="delete_btn" @click='deleteTask(item._id)'><i class="fas fa-trash-alt"></i></button>
 
@@ -32,7 +31,7 @@
   </div>
 </template>
 <script>
-import { bus } from '../entry/set_task.js';
+import { busS } from '../entry/set_task.js';
 import $ from 'jquery'
 
   export default {
@@ -89,7 +88,11 @@ import $ from 'jquery'
     methods: {
       transferDataToForm: function(item) {
         item.edit = true;
-        bus.$emit('editBtnClick', item, this.edit);
+        busS.$emit('editBtnClick', item, this.edit);
+      },
+      transferDataToCommentForm: function(item) {
+        item.edit = true;
+        busS.$emit('commentBtnClick', item, this.edit);
       },
       getTasksSetByMe: async function () { // calls automatically hool crated
         let userId = {id: localStorage.id};
@@ -137,7 +140,7 @@ import $ from 'jquery'
               break;
             }
         });
-      }
+      },
   }
 }
 </script>

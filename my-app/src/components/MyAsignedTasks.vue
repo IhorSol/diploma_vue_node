@@ -12,8 +12,8 @@
       <div class="asigned_task__buttons">
         <!-- <button id="btn_done">Виконано</button>
         <button id="btn_more">Детальніше</button> -->
-        <button id="comment_btn"><i class="fas fa-comment-dots"></i></button>
-        <button class="show_btn" @click='transferDataToForm(item)'><i class="fas fa-eye"></i></button>
+        <button class="comment_btn" @click='transferDataToCommentForm(item)'><i class="fas fa-comment-dots"></i></button>
+        <button class="show_btn" @click='transferDataToShowForm(item)'><i class="fas fa-eye"></i></button>
         <button id="done_btn" @click='completeTask(item._id)'><i class="far fa-check-circle"></i></button>
       </div>
     </div>
@@ -40,6 +40,11 @@ export default {
  },
   updated: function() {
     $(".show_btn").on('click', function() {
+      $(".form_bg").addClass("flex");
+      $(".form").addClass("read_only");
+      $(".set_task_form__name").attr("disabled", true);
+    })
+    $(".comment_btn").on('click', function() {
       $(".form_bg").addClass("flex");
       $(".form").addClass("read_only");
       $(".set_task_form__name").attr("disabled", true);
@@ -82,9 +87,14 @@ export default {
       const response = await fetch('/api/allUsers');
       this.allUsers = await response.json();
     },
-    transferDataToForm: function(item) {
+    transferDataToShowForm: function(item) {
       item.readOnly = true;
       bus.$emit('showBtnClick', item, this.edit);
+    },
+    transferDataToCommentForm: function(item) {
+      // console.log(item);
+      item.readOnly = true;
+      bus.$emit('commentBtnClick', item, this.edit);
     },
     completeTask: async function(itemId){
       console.log('complete task. Task id - ' + itemId);

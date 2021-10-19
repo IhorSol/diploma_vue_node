@@ -6,7 +6,7 @@
         <div class="set_task_form__header">
           <h2>Нове завдання</h2>
           <input name="creator" v-bind:value='creator_id' style="display:none">
-          <button class="set_task_form__close_btn" type="reset">X</button>
+          <button class="set_task_form__close_btn" onclick="event.preventDefault()">X</button>
         </div>
         <input type="text" class="set_task_form__name" placeholder="Назва задачі" name="title"  v-model='taskTitle'>
         <div class="set_task_form__details">
@@ -57,7 +57,7 @@
 </div>
 </template>
 <script>
-  import { bus } from '../entry/set_task.js';
+  import { busS } from '../entry/set_task.js';
   import $ from 'jquery'
 
   export default {
@@ -76,7 +76,7 @@
       }
     },
     created() {
-      bus.$on('editBtnClick', data => {
+      busS.$on('editBtnClick', data => {
         this.taskId = data._id,
         this.taskTitle = data.title;
         this.taskDeadline = data.deadline;

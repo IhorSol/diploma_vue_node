@@ -7,7 +7,7 @@ import '../css/main.min.css'
 
 Vue.config.productionTip = false
 
-export const bus = new Vue();
+export const busS = new Vue();
 new Vue({
   render: h => h(Header),
 }).$mount('#header')

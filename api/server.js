@@ -87,6 +87,7 @@ async function addTaskPost(req) {
     taskToAdd.status = 'new'; // до задачі додається статус "new"
     taskToAdd.isLooked = false; // чи задача переглянута виконвцем
     taskToAdd.isAccepted = false; // чи задача прийнята постановником
+    taskToAdd.comments = []; // масив для коментарів
 
     const taskArr = await collection.insertOne(taskToAdd);
     console.log(taskArr);
@@ -110,7 +111,7 @@ async function allTasksSetByMe(userIdObj) {
     const collection = client.db("task_manager").collection("tasks");
     // allTasks = await collection.find({creator: userIdObj.id, status: 'new', }).toArray();
     allTasks = await collection.find({creator: userIdObj.id, $or: [ { status: 'new' }, { status: 'finished' } ] }).toArray();
-    
+
     // $or: [ { <expression1> }, { <expression2> }, ... , { <expressionN> } ]
     return allTasks;
 
@@ -183,6 +184,27 @@ async function setTaskFinished(taskObj) {
   }
 }
 // ----------- set task status is Finished end ---------//
+
+// ----------- add task comments start ---------//
+async function addComentToTask(taskObj) {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+
+  console.log('Log from addComentToTask. Inc obj');
+  console.log(taskObj);
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("tasks");
+    await collection.updateOne({_id: taskObj._id}, {$set: {comments: taskObj.comments}});
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+}
+// ----------- add task comments end ---------//
 
 //------------ delete task start -------//
 async function deleteTask(taskObj) {
@@ -364,6 +386,25 @@ app.post('/api/deleteTask', (req, res) => {
   callDeleteTask()
 });
 // ---------- delete task finihsed -------------//
+
+// ---------- add comment to task started -------------//
+app.post('/api/addComment', urlencodedParser, function(req, res) {
+  if (!req.body) return res.sendStatus(400);
+  console.log('/api/addComment receiced');
+  console.log(req.body);
+  // console.log(req.body._id);
+
+  async function calladdComentToTask(reqBody){
+    console.log('api/addComentToTask called !!!');
+
+    await addComentToTask(reqBody);
+    res.sendStatus(200);
+    console.log('/api/addComentToTask - finished');
+  }
+  calladdComentToTask(req.body)
+
+});
+// ---------- add comment to task finihsed -------------//
 
 //------ check user while autorization -------//
 app.post('/api/checkUser', urlencodedParser, function(req, res) {
