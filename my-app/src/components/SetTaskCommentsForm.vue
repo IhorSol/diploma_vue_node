@@ -46,7 +46,7 @@
         </div> -->
         <div class="set_task_form__asign">
             <div id="asign_notice"></div>
-            <button id="set_task_form__asign_btn" @click='completeTask' onclick="event.preventDefault()">Виконано</button>
+            <button id="set_task_form__asign_btn" @click='acceptTask' onclick="event.preventDefault()">Прийняти як виконану</button>
         </div>
       </form>
 
@@ -106,11 +106,11 @@ export default {
     })
   },
   methods: {
-    completeTask: async function(){
+    acceptTask: async function(){
       console.log('complete task. Task id - ' + this.taskId);
       let taskToUpdate = { "_id": this.taskId}
 
-      await fetch(`/api/finishTask`, {
+      await fetch(`/api/acceptTask`, {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(taskToUpdate)

@@ -1,5 +1,6 @@
 <template lang="html">
   <div class="asigned_tasks">
+    <p>Counter. Tasks not viewed - {{ countNotViewedTasks.length }}</p><br> <!-- показує к-сть непродивлених задач -->
     <div class="asigned_task" v-for="item in myTasks" v-bind:key="item._id">
       <div class="asigned_task__header">
         <div class="asigned_task__complexity ">{{ item.complication }}</div> <!--/*******color_complexity -->
@@ -13,7 +14,7 @@
         <!-- <button id="btn_done">Виконано</button>
         <button id="btn_more">Детальніше</button> -->
         <button class="comment_btn" @click='transferDataToCommentForm(item)'><i class="fas fa-comment-dots"></i></button>
-        <button class="show_btn" @click='transferDataToShowForm(item)'><i class="fas fa-eye"></i></button>
+        <button class="show_btn" @click='transferDataToShowForm(item); '><i class="fas fa-eye"></i></button>
         <button id="done_btn" @click='completeTask(item._id)'><i class="far fa-check-circle"></i></button>
       </div>
     </div>
@@ -87,12 +88,20 @@ export default {
       const response = await fetch('/api/allUsers');
       this.allUsers = await response.json();
     },
-    transferDataToShowForm: function(item) {
+    transferDataToShowForm: async function(item) {
       item.readOnly = true;
       bus.$emit('showBtnClick', item, this.edit);
+  // change isLooked to TRUE
+      console.log('mark task as looked. Task id - ' + item._id);
+      let taskToUpdate = { "_id": item._id}
+
+      await fetch(`/api/markAsLooked`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(taskToUpdate)
+        })
     },
     transferDataToCommentForm: function(item) {
-      // console.log(item);
       item.readOnly = true;
       bus.$emit('commentBtnClick', item, this.edit);
     },
@@ -133,6 +142,13 @@ export default {
             break;
           }
       });
+    }
+  },
+  computed: {
+    countNotViewedTasks: function() { // показує к-сть непродивлених задач
+      return this.myTasks.filter(function(task){
+        return task.isLooked === false
+      })
     }
   }
 }
