@@ -38,7 +38,7 @@ module.exports = {
         template: './src/pages/news.html',
         title: 'About-html from pages'
       },
-      'users': { 
+      'users': {
         entry: './src/entry/users.js',
         template: './src/pages/users.html',
         title: 'About-html from pages'
