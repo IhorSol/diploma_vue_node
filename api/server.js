@@ -2,18 +2,26 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const { MongoClient } = require('mongodb');
+const multer  = require('multer')
 
+//-------- config multer ---------//
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'F:/Програмування/JavaScript/diploma-vue-node/my-app/src/assets/images')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+//-------- config multer ---------//
 
 const port = 3080;
 
+const upload = multer({ storage: storage }) // using multer
 const app = express();
 
 app.use(bodyParser.json());
 var urlencodedParser = bodyParser.urlencoded({extended: false});
-
-const users = [
-  {name: 'Ihor', age: 29}
-];
 
 //-------------DB connection Start------------------//
 async function main() {  // first DB function. Get users drom base -> findUsers()
@@ -315,9 +323,14 @@ app.get('/api/allUsers', (req, res) => {
 });
 
 // receives info for POST from AddUserForm.vue
-app.post('/api/contacts', urlencodedParser, function(req, res) {
+// upload.single('avatar') - uploads image using multer
+app.post('/api/contacts', upload.single('avatar'), urlencodedParser, function(req, res) {
   if (!req.body) return res.sendStatus(400);
   console.log(req.body);
+  console.log(req.file);
+  // console.log(req.body.image = req.file.originalname);
+  // console.log(req.body);
+  req.body.image = req.file.originalname
   addUserPost(req);
   return res.sendStatus(200);
 });
