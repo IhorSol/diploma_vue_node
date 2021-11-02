@@ -1,7 +1,6 @@
 <template lang="html">
   <div class="my_tasks_part">
     <ShowTaskForm/>
-    <!-- <MyTasksCommentsForm/> -->
     <MyAsignedTasks></MyAsignedTasks>
   </div>
 </template>
@@ -9,7 +8,6 @@
 <script>
 import ShowTaskForm from './ShowTaskForm.vue';
 import MyAsignedTasks from './MyAsignedTasks.vue';
-// import MyTasksCommentsForm from './MyTasksCommentsForm.vue';
 
 import $ from 'jquery'
 

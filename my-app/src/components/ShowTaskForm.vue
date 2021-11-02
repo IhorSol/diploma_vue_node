@@ -1,12 +1,12 @@
 <template>
-  <div class="form_bg">
+  <div id="show_form" class="form_bg"> <!-- changed class name from form_bg -->
     <div class="set_task_form">
       <p>Show tast form</p>
       <form action="api/createTask" method="post" class="form">
         <div class="set_task_form__header">
           <h2>Поточне завдання</h2>
           <!-- <input name="creator" v-bind:value='creator_id' style="display:none"> -->
-          <button class="set_task_form__close_btn" onclick="event.preventDefault()">X</button>
+          <button class="show_task_form__close_btn" onclick="event.preventDefault()">X</button>
         </div>
         <input type="text" class="set_task_form__name" placeholder="Назва задачі" name="title"  v-model='taskTitle'>
         <div class="set_task_form__details">
@@ -50,22 +50,14 @@
         </div>
       </form>
 
-      <!-- comments form started -->
-      <textarea title="comment input" v-model="taskPerformerComment"> </textarea><br>
-      <button type="button" @click="addComment()">Додати коментар</button> <br><br>
-      <div class="comments-to-task">
-        <div class="comment" v-for="(comment, index) in taskComments" :key="index">
-          <p>Name: {{ comment.userName }}</p>
-          <p>Comment text: {{ comment.comment }}</p> <br>
-        </div>
-      </div>
-      <!-- comments form ended -->
-
   </div>
+  <MyTasksCommentsForm :taskComments="taskComments" :taskId="taskId"/>
 </div>
 </template>
 <script>
+  import MyTasksCommentsForm from './TaskCommentsForm.vue';
   import { bus } from '../entry/my_tasks.js';
+  import { busS } from '../entry/set_task.js';
   import $ from 'jquery'
 
   export default {
@@ -80,14 +72,27 @@
         taskPerformer: '',
         // creator_id: localStorage.getItem("id"),
         edit: false,
-        taskComments: [], // added
-        readOnly: false,
+        taskComments: [],
+        readOnly: true,
         taskPerformerComment: '',
         taskPerformerName: ''
       }
     },
+    components: {
+      MyTasksCommentsForm
+    },
     created() {
       bus.$on('showBtnClick', data => {
+        this.taskTitle = data.title;
+        this.taskDeadline = data.deadline;
+        this.taskComplexity = data.complication;
+        this.taskDescription = data.taskDescription;
+        this.taskPerformer = data.performer;
+        this.readOnly = data.readOnly;
+        this.taskId = data._id;
+        this.taskComments = data.comments
+      }),
+      busS.$on('commentBtnClick', data => {
         this.taskTitle = data.title;
         this.taskDeadline = data.deadline;
         this.taskComplexity = data.complication;
@@ -117,23 +122,7 @@
             body: JSON.stringify(taskToUpdate)
           })
         document.location.reload()
-      },
-      addComment: async function () {
-        console.log(this.taskPerformerComment);
-        this.taskComments.push(
-          {userName: localStorage.name,
-           comment: this.taskPerformerComment}
-        );
-        this.taskPerformerComment = '';
-
-        let commentsToUpdate = { "_id": this.taskId, comments: this.taskComments};
-
-        await fetch(`/api/addComment`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(commentsToUpdate)
-          })
       }
-    },
+    }
   }
 </script>

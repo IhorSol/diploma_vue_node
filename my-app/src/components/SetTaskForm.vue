@@ -1,5 +1,5 @@
 <template>
-  <div class="form_bg">
+  <div id="set_form" class="form_bg">
     <div class="set_task_form">
       <p>Set task form</p>
       <form id="resForm" action="api/createTask" method="post" class="form">

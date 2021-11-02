@@ -17,10 +17,9 @@
           <div class="asigned_task__deadline"><i class="fas fa-calendar-week"></i> {{ item.deadline}}</div>
           <div class="asigned_task__asigned-by"><i class="fas fa-user"></i>{{ allUsers[item.performer-1].name}} </div>
           <div class="asigned_task__buttons">
-            <button id="comment_btn" @click='transferDataToCommentForm(item)'><i class="fas fa-comments"></i></button>
+            <button class="comment_btn" @click='transferDataToShowForm(item)'><i class="fas fa-comments"></i></button>
             <button class="edit_btn" @click='transferDataToForm(item)'><i class="fas fa-edit"></i></button>
             <button id="delete_btn" @click='deleteTask(item._id)'><i class="fas fa-trash-alt"></i></button>
-
           </div>
         </div>
 
@@ -28,9 +27,11 @@
 
     </div>
 
+    <ShowTaskForm />
   </div>
 </template>
 <script>
+// import ShowTaskForm from './ShowTaskForm.vue';
 import { busS } from '../entry/set_task.js';
 import $ from 'jquery'
 
@@ -43,6 +44,9 @@ import $ from 'jquery'
         // finihsedNotAccepted: finihsedTaskCounter()
       }
     },
+    components: {
+      // ShowTaskForm
+    },
     props: {
       allUsers: Array
     },
@@ -51,23 +55,31 @@ import $ from 'jquery'
     },
     updated: function() {
       $(".edit_btn").on('click', function() {
-        $(".form_bg").addClass("flex");
-        // $("#set_task_form__asign_btn").text("Змінити");
+        $("#set_form").addClass("flex");
+      })
+      $(".comment_btn").on('click', function() {
+        $("#show_form").addClass("flex");
+        $(".form").addClass("read_only");
       })
       this.complexityColor();
     },
     mounted() {
       $("#set_task").on('click', function() {
-        $(".form_bg").addClass("flex");
+        $("#set_form").addClass("flex");
       })
       $(".set_task_form__close_btn").on('click', function(){
-        $(".form_bg").removeClass("flex");
+        $("#set_form").removeClass("flex");
         $(".form").removeClass("read_only");
         $(".set_task_form__name").attr("disabled", false);
       })
       $(".edit_btn").on('click', function() {
-        $(".form_bg").addClass("flex");
+        $("#set_form").addClass("flex");
         // $("#set_task_form__asign_btn").text("Змінити");
+      })
+      $(".show_task_form__close_btn").on('click', function(){
+        $("#show_form").removeClass("flex");
+        $(".form").removeClass("read_only");
+        $(".set_task_form__name").attr("disabled", false);
       })
 
       this.complexityColor();
@@ -89,8 +101,8 @@ import $ from 'jquery'
         item.edit = true;
         busS.$emit('editBtnClick', item, this.edit);
       },
-      transferDataToCommentForm: function(item) {
-        item.edit = true;
+      transferDataToShowForm: function(item) {
+        item.readOnly = true;
         busS.$emit('commentBtnClick', item, this.edit);
       },
       getTasksSetByMe: async function () { // calls automatically hool crated
