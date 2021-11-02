@@ -2,18 +2,26 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const { MongoClient } = require('mongodb');
+const multer  = require('multer')
 
+//-------- config multer ---------//
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'F:/Програмування/JavaScript/diploma-vue-node/my-app/src/assets/images')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+//-------- config multer ---------//
 
 const port = 3080;
 
+const upload = multer({ storage: storage }) // using multer
 const app = express();
 
 app.use(bodyParser.json());
 var urlencodedParser = bodyParser.urlencoded({extended: false});
-
-const users = [
-  {name: 'Ihor', age: 29}
-];
 
 //-------------DB connection Start------------------//
 async function main() {  // first DB function. Get users drom base -> findUsers()
@@ -38,19 +46,6 @@ async function findUsers(client){ // get all users drom DB
   console.log(usersArr);
   console.log('Number of users - ' + numberOfUsers);
   console.log('Next user ID = ' + (numberOfUsers + 1));
-}
-
-async function addUser(client) { // insert test user into DB. TEST function
-  const collection = client.db("task_manager").collection("users");
-  const usersArr = await collection.insertOne(
-    {
-      "name":"George",
-      "position":"admin",
-      "email":"admin@test.ru",
-      "department":"IT",
-    }
-  );
-  console.log(usersArr);
 }
 
 async function addUserPost(req) { //insert user from form from AddUserForm.vue
@@ -87,6 +82,7 @@ async function addTaskPost(req) {
     taskToAdd.status = 'new'; // до задачі додається статус "new"
     taskToAdd.isLooked = false; // чи задача переглянута виконвцем
     taskToAdd.isAccepted = false; // чи задача прийнята постановником
+    taskToAdd.comments = []; // масив для коментарів
 
     const taskArr = await collection.insertOne(taskToAdd);
     console.log(taskArr);
@@ -96,11 +92,11 @@ async function addTaskPost(req) {
   } finally {
     await client.close();
   }
-
 }
 //---------- запрос в базу на додавання задачі кінець ----------//
 
-async function allTasksSetByMe(userIdObj) {
+//---------- allTasksSetByMe started ------------//
+async function allTasksSetByMe(userIdObj) { // find all tasks set by me with statuses 'new' or 'finished' and isAccepted: 'false'
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
   const client = new MongoClient(uri);
   let allTasks = [];
@@ -108,10 +104,7 @@ async function allTasksSetByMe(userIdObj) {
   try {
     await client.connect();
     const collection = client.db("task_manager").collection("tasks");
-    // allTasks = await collection.find({creator: userIdObj.id, status: 'new', }).toArray();
-    allTasks = await collection.find({creator: userIdObj.id, $or: [ { status: 'new' }, { status: 'finished' } ] }).toArray();
-    
-    // $or: [ { <expression1> }, { <expression2> }, ... , { <expressionN> } ]
+    allTasks = await collection.find({creator: userIdObj.id, isAccepted: false, $or: [ { status: 'new' }, { status: 'finished' } ] }).toArray();
     return allTasks;
 
   } catch (e) {
@@ -119,9 +112,10 @@ async function allTasksSetByMe(userIdObj) {
   } finally {
     await client.close();
   }
-
 }
+//---------- allTasksSetByMe finihsed ------------//
 
+//---------- getAllUsers started ------------//
 async function getAllUsers() {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
   const client = new MongoClient(uri);
@@ -138,8 +132,8 @@ async function getAllUsers() {
   } finally {
     await client.close();
   }
-
 }
+//---------- getAllUsers finihsed ------------//
 
 // ----------- task update start ---------//
 async function updateTask(taskObj) {
@@ -183,6 +177,69 @@ async function setTaskFinished(taskObj) {
   }
 }
 // ----------- set task status is Finished end ---------//
+
+// ----------- set task isLooked start ---------//
+async function setTaskIsLooked(taskObj) {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+
+  console.log('Log from updateTask. Inc obj');
+  console.log(taskObj);
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("tasks");
+    await collection.updateOne({_id: taskObj._id}, {$set: {isLooked: true}});
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+}
+// ----------- set task isLooked end ---------//
+
+// ----------- set task isAccepted start ---------//
+async function setTaskIsAccepted(taskObj) {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+
+  console.log('Log from updateTask. Inc obj');
+  console.log(taskObj);
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("tasks");
+    await collection.updateOne({_id: taskObj._id}, {$set: {isAccepted: true}});
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+}
+// ----------- set task isAccepted end ---------//
+
+// ----------- add task comments start ---------//
+async function addComentToTask(taskObj) {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+
+  console.log('Log from addComentToTask. Inc obj');
+  console.log(taskObj);
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("tasks");
+    await collection.updateOne({_id: taskObj._id}, {$set: {comments: taskObj.comments}});
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+}
+// ----------- add task comments end ---------//
 
 //------------ delete task start -------//
 async function deleteTask(taskObj) {
@@ -266,9 +323,14 @@ app.get('/api/allUsers', (req, res) => {
 });
 
 // receives info for POST from AddUserForm.vue
-app.post('/api/contacts', urlencodedParser, function(req, res) {
+// upload.single('avatar') - uploads image using multer
+app.post('/api/contacts', upload.single('avatar'), urlencodedParser, function(req, res) {
   if (!req.body) return res.sendStatus(400);
   console.log(req.body);
+  console.log(req.file);
+  // console.log(req.body.image = req.file.originalname);
+  // console.log(req.body);
+  req.body.image = req.file.originalname
   addUserPost(req);
   return res.sendStatus(200);
 });
@@ -337,6 +399,44 @@ app.post('/api/finishTask', urlencodedParser, function(req, res) {
 });
 // ------------ set task finished end ---------------//
 
+// ------------ set task isLooked start ---------------//
+app.post('/api/markAsLooked', urlencodedParser, function(req, res) {
+  if (!req.body) return res.sendStatus(400);
+  console.log('/api/markAsLooked receiced');
+  console.log(req.body);
+  console.log(req.body._id);
+
+  async function callSetTaskIsLooked(reqBody){
+    console.log('api/finishTask called !!!');
+
+    await setTaskIsLooked(reqBody);
+    res.sendStatus(200);
+    console.log('/api/updateTask - finished');
+  }
+  callSetTaskIsLooked(req.body)
+
+});
+// ------------ set task isLooked end ---------------//
+
+// ------------ set task isAccepted start ---------------//
+app.post('/api/acceptTask', urlencodedParser, function(req, res) {
+  if (!req.body) return res.sendStatus(400);
+  console.log('/api/acceptTask receiced');
+  console.log(req.body);
+  console.log(req.body._id);
+
+  async function callSetTaskIsAccepted(reqBody){
+    console.log('api/finishTask called !!!');
+
+    await setTaskIsAccepted(reqBody);
+    res.sendStatus(200);
+    console.log('/api/updateTask - finished');
+  }
+  callSetTaskIsAccepted(req.body)
+
+});
+// ------------ set task isAccepted end ---------------//
+
 // ---------- get all my tasks started----------//
 app.post('/api/myTasks', (req, res) => {
   async function callGetMyTasks(){
@@ -364,6 +464,24 @@ app.post('/api/deleteTask', (req, res) => {
   callDeleteTask()
 });
 // ---------- delete task finihsed -------------//
+
+// ---------- add comment to task started -------------//
+app.post('/api/addComment', urlencodedParser, function(req, res) {
+  if (!req.body) return res.sendStatus(400);
+  console.log('/api/addComment receiced');
+  console.log(req.body);
+
+  async function calladdComentToTask(reqBody){
+    console.log('api/addComentToTask called !!!');
+
+    await addComentToTask(reqBody);
+    res.sendStatus(200);
+    console.log('/api/addComentToTask - finished');
+  }
+  calladdComentToTask(req.body)
+
+});
+// ---------- add comment to task finihsed -------------//
 
 //------ check user while autorization -------//
 app.post('/api/checkUser', urlencodedParser, function(req, res) {

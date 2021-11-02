@@ -2,7 +2,9 @@
   <div class="users">
     <div class="user_card" v-for="user in usersAdmin" v-bind:key="user._id">
       <div class="user_card__main_info">
-        <div class="user_card__photo"></div>
+        <div class="user_card__photo">
+          <img :src="require(`../assets/images/${user.image}`)">
+        </div>
         <div class="user_card__user_name">{{ user.name }} {{ user.surname}}</div>
         <div class="user_card__tasks_statistic">Виконано завдань - 10</div>
       </div>
@@ -35,8 +37,15 @@
     }
   }
 </script>
-<style>
+<style scoped>
   .users {
     flex-wrap: wrap;
+  }
+  .user_card__photo > img {
+    height: 100%;
+    width: 100%
+  }
+  .user_card__photo {
+    overflow: hidden;
   }
 </style>

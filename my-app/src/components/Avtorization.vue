@@ -44,7 +44,7 @@
             localStorage.surname = this.userData[0].surname;
             localStorage.position = this.userData[0].position;
             localStorage.isAdmin = this.userData[0].isAdmin;
-
+            localStorage.photo = this.userData[0].image;
           } else {
             this.error = true
           }

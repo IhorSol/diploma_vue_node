@@ -1,7 +1,7 @@
-<template>
-  <div class="form_bg">
+<template lang="html">
+  <div class="form_bg_comments"> <!-- змінив назву класу. Додав _comments -->
     <div class="set_task_form">
-      <p>Show tast form</p>
+      <p>Comments form</p>
       <form action="api/createTask" method="post" class="form">
         <div class="set_task_form__header">
           <h2>Поточне завдання</h2>
@@ -38,15 +38,15 @@
 
           </div>
         </div>
-        <div class="set_task_form__performer">
+        <!-- <div class="set_task_form__performer">
           <span>Виконавець</span>
           <select name="performer" id="performer" v-model='taskPerformer'>
             <option v-for="user in allUsers" v-bind:key="user._id" v-bind:value="user._id">{{user.name}}</option>
           </select>
-        </div>
+        </div> -->
         <div class="set_task_form__asign">
             <div id="asign_notice"></div>
-            <button id="set_task_form__asign_btn" @click='completeTask' onclick="event.preventDefault()">Виконано</button>
+            <button id="set_task_form__asign_btn" @click='acceptTask' onclick="event.preventDefault()">Прийняти як виконану</button>
         </div>
       </form>
 
@@ -64,76 +64,78 @@
   </div>
 </div>
 </template>
+
 <script>
-  import { bus } from '../entry/my_tasks.js';
-  import $ from 'jquery'
+import { busS } from '../entry/set_task.js';
 
-  export default {
-    name: 'ShowTaskForm',
-    data() {
-      return {
-        taskId: '',
-        taskTitle: '',
-        taskDeadline: '',
-        taskComplexity: '',
-        taskDescription: '',
-        taskPerformer: '',
-        // creator_id: localStorage.getItem("id"),
-        edit: false,
-        taskComments: [], // added
-        readOnly: false,
-        taskPerformerComment: '',
-        taskPerformerName: ''
-      }
-    },
-    created() {
-      bus.$on('showBtnClick', data => {
-        this.taskTitle = data.title;
-        this.taskDeadline = data.deadline;
-        this.taskComplexity = data.complication;
-        this.taskDescription = data.taskDescription;
-        this.taskPerformer = data.performer;
-        this.readOnly = data.readOnly;
-        this.taskId = data._id;
-        this.taskComments = data.comments
-      })
-    },
-    updated() {
-      $("#set_task_form__edit_btn").on('click', function() {
-        $(".form_bg").removeClass("flex");
-      })
-    },
-    props: {
-      allUsers: Array
-    },
-    methods: {
-      completeTask: async function(){
-        console.log('complete task. Task id - ' + this.taskId);
-        let taskToUpdate = { "_id": this.taskId}
+import $ from 'jquery'
 
-        await fetch(`/api/finishTask`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(taskToUpdate)
-          })
-        document.location.reload()
-      },
-      addComment: async function () {
-        console.log(this.taskPerformerComment);
-        this.taskComments.push(
-          {userName: localStorage.name,
-           comment: this.taskPerformerComment}
-        );
-        this.taskPerformerComment = '';
+export default {
+  name: 'SetTasksCommentsForm',
+  data() {
+    return {
+      taskId: '',
+      taskTitle: '',
+      taskDeadline: '',
+      taskComplexity: '',
+      taskDescription: '',
+      taskPerformer: '',
+      // creator_id: localStorage.getItem("id"),
+      edit: false,
+      taskComments: [], // added
+      readOnly: false,
+      taskPerformerComment: '',
+      taskPerformerName: ''
+    }
+  },
+  created() {
+    busS.$on('commentBtnClick', data => {
+      this.taskTitle = data.title;
+      this.taskDeadline = data.deadline;
+      this.taskComplexity = data.complication;
+      this.taskDescription = data.taskDescription;
+      this.taskPerformer = data.performer;
+      this.readOnly = data.readOnly;
+      this.taskId = data._id;
+      this.taskComments = data.comments
+    })
+  },
+  updated() {
+    $("#set_task_form__edit_btn").on('click', function() {
+      $(".form_bg").removeClass("flex");
+    })
+  },
+  methods: {
+    acceptTask: async function(){
+      console.log('complete task. Task id - ' + this.taskId);
+      let taskToUpdate = { "_id": this.taskId}
 
-        let commentsToUpdate = { "_id": this.taskId, comments: this.taskComments};
-
-        await fetch(`/api/addComment`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(commentsToUpdate)
-          })
-      }
+      await fetch(`/api/acceptTask`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(taskToUpdate)
+        })
+      document.location.reload()
     },
+    addComment: async function () {
+      console.log(this.taskPerformerComment);
+      this.taskComments.push(
+        {userName: localStorage.name,
+         comment: this.taskPerformerComment}
+      );
+      this.taskPerformerComment = '';
+
+      let commentsToUpdate = { "_id": this.taskId, comments: this.taskComments};
+
+      await fetch(`/api/addComment`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(commentsToUpdate)
+        })
+    }
   }
+}
 </script>
+
+<style lang="css" scoped>
+</style>

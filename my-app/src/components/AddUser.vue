@@ -1,6 +1,6 @@
 <template>
   <div class="settings_add_user">
-    <form class="add_user__form" action="/api/contacts" method="post">
+    <form class="add_user__form" action="/api/contacts" method="post" enctype="multipart/form-data">
       <h3>Додати нового користувача</h3>
       <label for="surname">Прізвище</label>
       <input type="text" name="surname" class="input">
@@ -18,6 +18,8 @@
       <input type="date" name="data_of_birth" class="input">
       <label for="position">Посада</label>
       <input type="text" name="position" class="input">
+      <label for="avatar">Фото профілю</label>
+      <input type="file" name="avatar">
       <button id="add_user__btn">Додати</button>
     </form>
   </div>
