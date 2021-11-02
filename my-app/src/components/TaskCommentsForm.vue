@@ -37,7 +37,7 @@ export default {
       );
       this.userComments = '';
 
-      let commentsToUpdate = { "_id": this.taskId, comments: this.taskComments};
+      let commentsToUpdate = { "_id": toString(this.taskId), comments: this.taskComments};
 
       await fetch(`/api/addComment`, {
           method: 'POST',

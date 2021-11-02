@@ -20,6 +20,7 @@
       <input type="text" name="position" class="input">
       <label for="avatar">Фото профілю</label>
       <input type="file" name="avatar">
+      <input name="employee_workload" value="0" style="display: none">
       <button id="add_user__btn">Додати</button>
     </form>
   </div>
