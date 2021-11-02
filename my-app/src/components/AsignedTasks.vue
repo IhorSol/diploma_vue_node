@@ -1,15 +1,16 @@
 <template>
   <div class="asigned_tasks_part">
     <h2>Призначені завдання</h2>
+    <h2>Finished task - {{ finihsedTaskCounter }} </h2> <!-- finished task counter -->
     <div class="asigned_tasks">
 
-      <h2>Finished task - {{ finihsedTaskCounter }} </h2> <!-- finished task counter -->
+
 
       <div class="asigned_task" v-for="item in tasksSetByMe" v-bind:key="item._id">
         <div class="asigned_task__header">
 
           <p>Task status - {{ item.status }}</p>  <!-- task status for tests -->
-          
+
           <div class="asigned_task__complexity">{{ item.complication }}</div>
           <div class="asigned_task__name"><h3>{{ item.title }} </h3></div>
         </div>
