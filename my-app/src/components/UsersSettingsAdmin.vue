@@ -2,23 +2,21 @@
   <div class="settings_users">
     <div class="settings_user_card" v-for="user in usersAdmin" v-bind:key="user._id">
       <div class="settings_users__photo">
-        <img :src="require(`../assets/images/${user.image}`)" height="100px">
+        <img :src="require(`../assets/images/${user.image}`)">
       </div>
       <div class="settings_users__info">
         <div class="settings_user_name">
           {{ user.name }} {{ user.surname}}
         </div>
         <div class="settings_user_login">
-          {{ user.login }}
+          {{ user.email }}
         </div>
         <div class="settings_user_password">
-          {{ user.password }}
+          {{ user.phone }}
         </div>
         <div class="settings_user_delete_user"><button id="del_user">Delete user <i class="far fa-trash-alt"></i></button></div>
       </div>
     </div>
-
-    <!-- <img src="../../static/naruto.png"> -->
   </div>
 </template>
 <script>
@@ -28,7 +26,6 @@
     data: function() {
       return {
         usersAdmin: [],
-        image: '../assets/pictures/naruto.png' // require('../assets/pictures/naruto.png')
       }
     },
     created: function(){
@@ -40,18 +37,16 @@
         const response = await fetch('/api/allUsers');
         this.usersAdmin = await response.json();
       },
-      itemImage(user) {
-        let ingPath = user.image;
-        let resp = 'require(`../../public/' + ingPath + '`)'
-        return resp
-      }
     }
-    // computed: {
-    //    itemImage(user) {
-    //      let ingPath = user.image;
-    //      let resp = 'require(`' + ingPath + '`)'
-    //      return resp
-    //    }
-    // }
   }
 </script>
+
+<style scoped>
+  .settings_users__photo > img {
+    height: 100%;
+    width: 100%
+  }
+  .settings_users__photo {
+    overflow: hidden;
+  }
+</style>

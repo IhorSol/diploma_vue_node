@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="asigned_tasks">
-    <p>Counter. Tasks not viewed - {{ countNotViewedTasks.length }}</p><br> <!-- показує к-сть непродивлених задач -->
+    <h2>Counter. Tasks not viewed - {{ countNotViewedTasks.length }}</h2> <!-- показує к-сть непродивлених задач -->
     <div class="asigned_task" v-for="item in myTasks" v-bind:key="item._id">
       <div class="asigned_task__header">
         <div class="asigned_task__complexity ">{{ item.complication }}</div> <!--/*******color_complexity -->
@@ -54,19 +54,19 @@ export default {
 
   },
   mounted() {
-    $("#set_task").on('click', function() {
-      $(".form_bg").addClass("flex");
-    })
+    // $("#set_task").on('click', function() {
+    //   $(".form_bg").addClass("flex");
+    // })
     $(".set_task_form__close_btn").on('click', function(){
       $(".form_bg").removeClass("flex");
-      $("#set_task_form__asign_btn").text("Призначити");
+      // $("#set_task_form__asign_btn").text("Призначити");
       $(".form").removeClass("read_only");
       $(".set_task_form__name").attr("disabled", false);
     })
-    $(".edit_btn").on('click', function() {
-      $(".form_bg").addClass("flex");
-      $("#set_task_form__asign_btn").text("Змінити");
-    })
+    // $(".edit_btn").on('click', function() {
+    //   $(".form_bg").addClass("flex");
+    //   $("#set_task_form__asign_btn").text("Змінити");
+    // })
     $("#show_btn").on('click', function() {
       $(".form_bg").addClass("flex");
       $("#set_task_form__asign_btn").text("Bиконано");

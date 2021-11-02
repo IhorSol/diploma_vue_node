@@ -7,7 +7,9 @@
       <div class="data">dd.mm.yy</div>
     </div>
     <div class="user-info">
-      <div class="user_photo"></div>
+      <div class="user_photo">
+        <img :src="require(`../assets/images/${this.userPhoto}`)">
+      </div>
       <div class="user_name">
         {{ userName }}
       </div>
@@ -23,7 +25,8 @@
     data() {
       return {
         userName: localStorage.getItem("login"),
-        userPosition: localStorage.getItem("position")
+        userPosition: localStorage.getItem("position"),
+        userPhoto: localStorage.getItem("photo"),
       }
     },
     methods: {
@@ -47,3 +50,13 @@
   }
 }
 </script>
+
+<style>
+  .user_photo > img {
+    height: 100%;
+    width: 100%
+  }
+  .user_photo img {
+    overflow: hidden;
+  }
+</style>

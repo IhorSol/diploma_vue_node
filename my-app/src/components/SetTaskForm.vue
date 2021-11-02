@@ -2,11 +2,11 @@
   <div class="form_bg">
     <div class="set_task_form">
       <p>Set task form</p>
-      <form action="api/createTask" method="post" class="form">
+      <form id="resForm" action="api/createTask" method="post" class="form">
         <div class="set_task_form__header">
           <h2>Нове завдання</h2>
           <input name="creator" v-bind:value='creator_id' style="display:none">
-          <button class="set_task_form__close_btn" onclick="event.preventDefault()">X</button>
+          <button class="set_task_form__close_btn" @click="closeFormBtnClick">X</button> <!-- onclick="event.preventDefault()" -->
         </div>
         <input type="text" class="set_task_form__name" placeholder="Назва задачі" name="title"  v-model='taskTitle'>
         <div class="set_task_form__details">
@@ -47,9 +47,8 @@
         <div class="set_task_form__asign">
             <div id="asign_notice"></div>
             <button id="set_task_form__asign_btn" v-if='!edit'>Призначити</button>
-            <button id="set_task_form__edit_btn" v-else type="button" @click='editTask' onclick="event.preventDefault()">Редагувати</button>
+            <button id="set_task_form__asign_btn" v-else type="button" @click='editTask' onclick="event.preventDefault()">Редагувати</button>
             <!-- <button id="set_task_form__asign_btn" v-if type="button" @click='showT'>Done</button> -->
-
         </div>
       </form>
       <!-- <div> Div for tasks item to modify: {{ taskObj }}</div> -->
@@ -111,6 +110,16 @@
           // console.log(response);
           document.location.reload()
       },
+      closeFormBtnClick(e) {
+        e.preventDefault();
+        this.taskId = '',
+        this.taskTitle = '';
+        this.taskDeadline = '';
+        this.taskComplexity = '';
+        this.taskDescription = '';
+        this.taskPerformer = '';
+        this.edit = false;
+      }
     }
   }
 </script>
