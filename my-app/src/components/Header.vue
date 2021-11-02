@@ -52,11 +52,4 @@
 </script>
 
 <style>
-  .user_photo > img {
-    height: 100%;
-    width: 100%
-  }
-  .user_photo img {
-    overflow: hidden;
-  }
 </style>
