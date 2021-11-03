@@ -24,7 +24,7 @@
     name: 'Header',
     data() {
       return {
-        userName: localStorage.getItem("login"),
+        userName: localStorage.getItem("name"),
         userPosition: localStorage.getItem("position"),
         userPhoto: localStorage.getItem("photo"),
       }

@@ -24,21 +24,6 @@ app.use(bodyParser.json());
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 //-------------DB connection Start------------------//
-async function main() {  // first DB function. Get users drom base -> findUsers()
-
-  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
-  const client = new MongoClient(uri);
-
-  try {
-    await client.connect();
-  } catch (e) {
-    console.error(e);
-  } finally {
-    await client.close();
-  }
-}
-
-
 async function findUsers(client){ // get all users drom DB
   const collection = client.db("task_manager").collection("users");
   const usersArr = await collection.find({}).toArray();
@@ -281,9 +266,30 @@ async function allMyTasks(userIdObj) {
   } finally {
     await client.close();
   }
+}
+// ------- get all current user tasks with NEW status finished -------- //
+
+// ------- update user start ------//
+async function updateUser(userObj) {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+
+  console.log('Log from updateUser. Inc obj');
+  console.log(userObj);
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("users");
+    await collection.updateOne({_id: userObj.id}, {$set: {employee_workload: userObj.new_employee_workload}});
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
 
 }
-
+// ------- update user finish ------//
 
 async function checkUser(userObj) {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
@@ -340,7 +346,14 @@ app.post('/api/createTask', urlencodedParser, function(req, res) {
   if (!req.body) return res.sendStatus(400);
   console.log(req.body);
 
+  let userObj = {'id': parseInt(req.body.performer), 'new_employee_workload': req.body.new_employee_workload}
+  delete req.body.new_employee_workload
+
+  console.log(req.body);
+  console.log(userObj);
+
   async function callAddTaskPost(req){
+    await updateUser(userObj);
     await addTaskPost(req);
     res.redirect("/set_task.html")
   }

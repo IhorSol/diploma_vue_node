@@ -1,5 +1,5 @@
 <template>
-  <div class="form_bg">
+  <div id="set_form" class="form_bg">
     <div class="set_task_form">
       <p>Set task form</p>
       <form id="resForm" action="api/createTask" method="post" class="form">
@@ -45,11 +45,15 @@
           </select>
         </div>
         <div class="set_task_form__asign">
-            <div class="asign_notice">Завдання такої складності перенавантажить працівника, і може бути виконане не вчасно. <p> Для виконання даного завдання можете обрати Another user</p></div>
+            <div v-if="checkEmployeeWorkload > 20" class="asign_notice">Завдання такої складності перенавантажить працівника, і може бути виконане не вчасно. <p> Для виконання даного завдання Ви можете обрати іншого. Наприклад - {{ getAltertnativeUser }}</p></div>
             <button id="set_task_form__asign_btn" v-if='!edit'>Призначити</button>
             <button id="set_task_form__asign_btn" v-else type="button" @click='editTask' onclick="event.preventDefault()">Редагувати</button>
             <!-- <button id="set_task_form__asign_btn" v-if type="button" @click='showT'>Done</button> -->
         </div>
+        <!-- <p>{{ checkEmployeeWorkload }}</p>
+        <p>{{ getAltertnativeUser }}</p> -->
+        <input name="new_employee_workload" :value="checkEmployeeWorkload" style="display: none">
+        <!-- {{this.allUsers[0].employee_workload}} -->
       </form>
       <!-- <div> Div for tasks item to modify: {{ taskObj }}</div> -->
   </div>
@@ -66,9 +70,9 @@
         taskId: '',
         taskTitle: '',
         taskDeadline: '',
-        taskComplexity: '',
+        taskComplexity: '', // використовеється для розрах навантаження
         taskDescription: '',
-        taskPerformer: '',
+        taskPerformer: '', // використовеється для розрах навантаження
         creator_id: localStorage.getItem("id"),
         edit: false,
         readOnly: false
@@ -119,6 +123,41 @@
         this.taskDescription = '';
         this.taskPerformer = '';
         this.edit = false;
+      }
+    },
+    computed: {
+      checkEmployeeWorkload() {
+        if (this.taskPerformer === '') {
+          return 0;
+        }
+        let taskPerformer = this.allUsers[this.taskPerformer-1];
+
+        if (parseInt(this.taskComplexity) + parseInt(taskPerformer.employee_workload) > 20) {
+          return parseInt(this.taskComplexity) + parseInt(this.allUsers[this.taskPerformer-1].employee_workload);
+        } else {
+          return parseInt(this.taskComplexity) + parseInt(this.allUsers[this.taskPerformer-1].employee_workload);
+        }
+      },
+      getAltertnativeUser() {
+        if (this.taskPerformer === '') {
+          return;
+        }
+        let taskPerformer = this.allUsers[this.taskPerformer-1];
+        let taskPerformerPosition = taskPerformer.position;
+
+        if (parseInt(this.taskComplexity) + parseInt(taskPerformer.employee_workload) > 20) {
+          let alternativeUser = this.allUsers.filter( (item) => {
+            return (item.position === taskPerformerPosition && item._id != this.taskPerformer && (parseInt(item.employee_workload) <= 20 - parseInt(this.taskComplexity)));
+          })
+          let namesOfAltUsers = [];
+          alternativeUser.forEach((item) => {
+            namesOfAltUsers.push(item.name)
+          });
+          return namesOfAltUsers.join(', ');
+          // return alternativeUser;
+        } else {
+          return '';
+        }
       }
     }
   }

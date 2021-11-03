@@ -6,10 +6,12 @@
             <div class="single_news" v-for="(news, index) in allNews" :key="index">
               <!-- <p>{{ news.newsTitle }}</p> -->
               <!-- <p>{{ news }}</p> -->
-              <div class="news_creator_photo"><img src=""></div>
+              <div class="news_creator_photo">
+                <img class="creator_photo" :src="require(`../assets/images/${userPhoto}`)">
+              </div>
               <div class="single_news_body">
                 <p class="news_creator_name">
-                  User Name
+                  {{ userName }}
                 </p>
                 <p class="news_text">{{ news }}</p>
               </div>
@@ -85,7 +87,9 @@
       return {
         allNews: [],
         // newsTitle: '',
-        newsBody: ''
+        newsBody: '',
+        userName: localStorage.getItem("name"),
+        userPhoto: localStorage.getItem("photo"),
       }
     },
     methods: {
@@ -104,5 +108,12 @@
 <style scoped>
   .all_news {
     width: 80%;
+  }
+  .news_creator_photo{
+    overflow: hidden;
+  }
+  .creator_photo {
+    height: 100%;
+    width: 100%
   }
 </style>
