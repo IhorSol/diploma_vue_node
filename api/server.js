@@ -131,7 +131,7 @@ async function updateTask(taskObj) {
   try {
     await client.connect();
     const collection = client.db("task_manager").collection("tasks");
-    await collection.replaceOne({_id: taskObj._id}, taskObj);
+    await collection.updateOne({_id: taskObj.taskId}, {$set: {title: taskObj.taskTitle, deadline: taskObj.taskDeadline, complication: taskObj.taskComplexity, taskDescription: taskObj.taskDescription, performer: taskObj.taskPerformer}});
 
   } catch (e) {
     console.error(e);
@@ -269,7 +269,7 @@ async function allMyTasks(userIdObj) {
 }
 // ------- get all current user tasks with NEW status finished -------- //
 
-// ------- update user start ------//
+// ------- update user field - employee_workload start ------//
 async function updateUser(userObj) {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
   const client = new MongoClient(uri);
@@ -289,7 +289,7 @@ async function updateUser(userObj) {
   }
 
 }
-// ------- update user finish ------//
+// ------- update user field - employee_workload finish ------//
 
 async function checkUser(userObj) {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
@@ -379,16 +379,35 @@ app.post('/api/updateTask', urlencodedParser, function(req, res) {
   if (!req.body) return res.sendStatus(400);
   console.log('/api/updateTask receiced');
   console.log(req.body);
-  console.log(req.body._id);
+  let userObj = req.body.user;
+  console.log(userObj);
+  delete req.body.user;
+  if (req.body.userBeforeEdit) {
+    var userBeforeEdit = req.body.userBeforeEdit;
+    console.log(userBeforeEdit);
+    delete req.body.userBeforeEdit;
+  }
+  let taskObj = req.body;
 
-  async function callUpdateTask(reqBody){
+  async function callUpdateTask(taskObj, userObj, userBeforeEdit = 'undifined'){
     console.log('api/updateTask called !!!');
-
-    await updateTask(reqBody);
+    await updateUser(userObj);
+    if (userBeforeEdit !== 'undifined') {
+      try {
+        await updateUser(userBeforeEdit);
+      } catch (e) {
+        console.error(e);
+      } 
+    }
+    await updateTask(taskObj);
     res.sendStatus(200);
     console.log('/api/updateTask - finished');
   }
-  callUpdateTask(req.body)
+  if (userBeforeEdit) {
+    callUpdateTask(taskObj, userObj, userBeforeEdit)
+  } else {
+    callUpdateTask(taskObj, userObj)
+  }
 
 });
 // ------------ task update end ---------------//
