@@ -1,13 +1,13 @@
 <template>
   <div class="main-part">
     <SetTaskForm v-bind:allUsers="allUsersParent"/>
-    <ShowTaskForm />
+    <ShowTaskForm :info = "infoToShowForm" />
     <!-- <SetTaskCommentsForm/> -->
     <div class="tasks_asign">
       <div class="set_task_btn">
         <button id="set_task">Призначити завдання</button>
       </div>
-      <AsignedTasks v-bind:allUsers="allUsersParent"/>
+      <AsignedTasks v-bind:allUsers="allUsersParent" v-on:commentBtnClick="transferDataToShowForm($event)" />
     </div>
   </div>
 </template>
@@ -21,7 +21,8 @@
     name: 'SetTask',
     data: function(){
       return {
-        allUsersParent: []
+        allUsersParent: [],
+        infoToShowForm: [],
       }
     },
     components: { SetTaskForm, AsignedTasks, ShowTaskForm}, // SetTaskCommentsForm
@@ -47,6 +48,11 @@
       showAllUsers: async function () {
         const response = await fetch('/api/allUsers');
         this.allUsersParent = await response.json();
+      },
+      transferDataToShowForm(event) {
+        this.infoToShowForm = event;
+        console.log("Emit received");
+        console.log(event);
       }
     }
   }

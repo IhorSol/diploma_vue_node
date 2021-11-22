@@ -48,14 +48,11 @@
             <div v-if="checkEmployeeWorkload() > 20" class="asign_notice">Завдання такої складності перенавантажить працівника, і може бути виконане не вчасно. <p> Для виконання даного завдання Ви можете обрати іншого. Наприклад - {{ getAltertnativeUser }}</p></div>
             <button id="set_task_form__asign_btn" v-if='!edit'>Призначити</button>
             <button id="set_task_form__asign_btn" v-else type="button" @click='editTask' onclick="event.preventDefault()">Редагувати</button>
-            <!-- <button id="set_task_form__asign_btn" v-if type="button" @click='showT'>Done</button> -->
         </div>
-        <!-- <p>{{ checkEmployeeWorkload }}</p>
-        <p>{{ getAltertnativeUser }}</p> -->
+
         <input name="new_employee_workload" :value="checkEmployeeWorkload" style="display: none">
-        <!-- {{this.allUsers[0].employee_workload}} -->
       </form>
-      <!-- <div> Div for tasks item to modify: {{ taskObj }}</div> -->
+
   </div>
 </div>
 </template>
@@ -116,11 +113,6 @@
           let userBeforeUpdateObj = {'id': parseInt(this.taskPerformerBeforeEdit), 'new_employee_workload': this.employeeWorkloadBeforeEdit};
           infoToUpdate.userBeforeEdit = userBeforeUpdateObj; // add user userBeforeUpdateObj into taskObj
         }
-
-        // console.log(userObj);
-        // console.log("User before update --------------------------------->>");
-        // console.log(userBeforeUpdateObj);
-        // userObj for update user workload //
 
         await fetch(`/api/updateTask`, {
             method: 'POST',
@@ -192,7 +184,6 @@
             namesOfAltUsers.push(item.name)
           });
           return namesOfAltUsers.join(', ');
-          // return alternativeUser;
         } else {
           return '';
         }

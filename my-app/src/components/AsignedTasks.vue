@@ -103,7 +103,7 @@ import $ from 'jquery'
       },
       transferDataToShowForm: function(item) {
         item.readOnly = true;
-        busS.$emit('commentBtnClick', item, this.edit);
+        this.$emit('commentBtnClick', item);
       },
       getTasksSetByMe: async function () { // calls automatically hool crated
         let userId = {id: localStorage.id};
