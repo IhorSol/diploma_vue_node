@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { bus } from '../entry/my_tasks.js';
+// import { bus } from '../entry/my_tasks.js';
 import $ from 'jquery'
 
 export default {
@@ -91,17 +91,20 @@ export default {
     },
     transferDataToShowForm: async function(item) {
       item.readOnly = true;
-      bus.$emit('showBtnClick', item, this.edit);
+      // bus.$emit('showBtnClick', item, this.edit);
+      this.$emit('commentBtnClick', item);
   // change isLooked to TRUE
       console.log('mark task as looked. Task id - ' + item._id);
-      let taskToUpdate = { "_id": item._id}
-
-      await fetch(`/api/markAsLooked`, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(taskToUpdate)
-        })
+    //   let taskToUpdate = { "_id": item._id}
+    //
+    //   await fetch(`/api/markAsLooked`, {
+    //       method: 'POST',
+    //       headers: {'Content-Type': 'application/json'},
+    //       body: JSON.stringify(taskToUpdate)
+    //     })
     },
+
+
     // transferDataToCommentForm: function(item) {
     //   item.readOnly = true;
     //   bus.$emit('commentBtnClick', item, this.edit);

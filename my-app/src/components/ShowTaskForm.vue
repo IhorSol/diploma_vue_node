@@ -56,8 +56,6 @@
 </template>
 <script>
   import MyTasksCommentsForm from './TaskCommentsForm.vue';
-  import { bus } from '../entry/my_tasks.js';
-  import { busS } from '../entry/set_task.js';
   import $ from 'jquery'
 
   export default {
@@ -75,33 +73,11 @@
         taskComments: [],
         readOnly: true,
         taskPerformerComment: '',
-        taskPerformerName: ''
+        taskPerformerName: '',
       }
     },
     components: {
       MyTasksCommentsForm
-    },
-    created() {
-      bus.$on('showBtnClick', data => {
-        this.taskTitle = data.title;
-        this.taskDeadline = data.deadline;
-        this.taskComplexity = data.complication;
-        this.taskDescription = data.taskDescription;
-        this.taskPerformer = data.performer;
-        this.readOnly = data.readOnly;
-        this.taskId = data._id;
-        this.taskComments = data.comments
-      }),
-      busS.$on('commentBtnClick', data => {
-        this.taskTitle = data.title;
-        this.taskDeadline = data.deadline;
-        this.taskComplexity = data.complication;
-        this.taskDescription = data.taskDescription;
-        this.taskPerformer = data.performer;
-        this.readOnly = data.readOnly;
-        this.taskId = data._id;
-        this.taskComments = data.comments
-      })
     },
     updated() {
       $("#set_task_form__edit_btn").on('click', function() {
@@ -109,7 +85,19 @@
       })
     },
     props: {
-      allUsers: Array
+      allUsers: Array,
+      info: Array, // for test $emit event from parent component
+    },
+    watch: {
+      info: function() {
+        this.taskId = this.info._id,
+        this.taskTitle = this.info.title,
+        this.taskDeadline = this.info.deadline,
+        this.taskComplexity = this.info.complication,
+        this.taskDescription = this.info.taskDescription,
+        this.taskPerformer = this.info.performer,
+        this.taskComments = this.info.comments
+      }
     },
     methods: {
       completeTask: async function(){
