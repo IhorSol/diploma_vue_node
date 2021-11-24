@@ -21,7 +21,7 @@
         <p class="menu_item">Новини</p>
         </a>
       </div>
-      <div class="add_user" v-show="isAdmin"><a href="settings.html">
+      <div class="add_user" v-show="isAdmin != 'undefined' "><a href="settings.html">
         <i class="fas fa-user-plus"></i>
         <p class="menu_item">Додати користувача</p>
         </a>

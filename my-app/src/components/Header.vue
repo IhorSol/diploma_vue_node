@@ -4,7 +4,7 @@
     <div class="full-data">
       <div class="time"></div>
       <div class="day"></div>
-      <div class="data">dd.mm.yy</div>
+      <div class="data">04.11.2021</div>
     </div>
     <div class="user-info">
       <div class="user_photo">

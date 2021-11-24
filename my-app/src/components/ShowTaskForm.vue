@@ -1,7 +1,7 @@
 <template>
   <div id="show_form" class="form_bg"> <!-- changed class name from form_bg -->
     <div class="set_task_form">
-      <p>Show tast form</p>
+      <!-- <p>Show tast form</p> -->
       <form action="api/createTask" method="post" class="form">
         <div class="set_task_form__header">
           <h2>Поточне завдання</h2>

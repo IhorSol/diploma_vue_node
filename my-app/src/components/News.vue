@@ -95,7 +95,7 @@
     methods: {
       addNews() {
         if (this.newsBody) {
-          this.allNews.push(this.newsBody);
+          this.allNews.unshift(this.newsBody);
           this.newsBody = '';
         } else {
           return

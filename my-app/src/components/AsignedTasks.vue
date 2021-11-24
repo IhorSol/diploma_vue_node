@@ -1,7 +1,7 @@
 <template>
   <div class="asigned_tasks_part">
     <h2>Призначені завдання</h2>
-    <h2>Finished task - {{ finihsedTaskCounter }} </h2> <!-- finished task counter -->
+    <!-- <h2>Finished task - {{ finihsedTaskCounter }} </h2> finished task counter -->
     <div class="asigned_tasks">
 
       <div class="asigned_task" v-for="item in tasksSetByMe" v-bind:key="item._id">
