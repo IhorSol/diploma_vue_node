@@ -375,7 +375,7 @@ app.post('/api/contacts', upload.single('avatar'), urlencodedParser, function(re
   // console.log(req.body);
   req.body.image = req.file.originalname
   addUserPost(req);
-  return res.sendStatus(200);
+  res.redirect("/settings.html");
 });
 
 // receives info for POST from TaskForm.vue
