@@ -589,7 +589,7 @@ app.post('/api/createNews', urlencodedParser, function(req, res) {
 
   async function callAddNews(req){
     await addNews(req);
-    res.redirect("/news.html")
+    res.redirect("/news.html");
   }
   callAddNews(req)
 });
