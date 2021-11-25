@@ -291,6 +291,7 @@ async function updateUser(userObj) {
 }
 // ------- update user field - employee_workload finish ------//
 
+// ---------- check user avtirization started ------------ //
 async function checkUser(userObj) {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
   const client = new MongoClient(uri);
@@ -309,13 +310,49 @@ async function checkUser(userObj) {
   }
 
 }
+// ---------- check user avtirization finished ------------ //
+
+//---------- getAllNews started ------------//
+async function getAllNews() {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+  let allNews = [];
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("news");
+    allNews = await collection.find({}).toArray();
+    return allNews;
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+}
+//---------- getAllNews finihsed ------------//
+
+//---------- add news started ----------//
+async function addNews(req) {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("news");
+    req.body._id = await collection.countDocuments() + 1;
+    await collection.insertOne(req.body);
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+}
+//---------- add news finished ----------//
+
 //-------------DB connection END ------------------//
 
-
-
-app.get('/', (req,res) => {
-  res.sendFile(path.join(__dirname, '../my-app/public/test.html'));
-});
 
 app.get('/api/allUsers', (req, res) => {
   async function callGetAllUsers(){
@@ -397,7 +434,7 @@ app.post('/api/updateTask', urlencodedParser, function(req, res) {
         await updateUser(userBeforeEdit);
       } catch (e) {
         console.error(e);
-      } 
+      }
     }
     await updateTask(taskObj);
     res.sendStatus(200);
@@ -530,7 +567,33 @@ app.post('/api/checkUser', urlencodedParser, function(req, res) {
   }
   callCheckUser(req.body)
 });
+//------ check user while autorization finished -------//
 
+// ------- get allNews started ------------//
+app.get('/api/allNews', (req, res) => {
+  async function callGetAllNews(){
+    console.log('api/allNews called !!!');
+    var allNews = await getAllNews();
+    res.json(allNews);
+    console.log('app.get(/api/allNews - finished');
+  }
+  callGetAllNews()
+});
+
+// ------- get allNews finished ------------//
+
+// ----------- create news started --------- //
+app.post('/api/createNews', urlencodedParser, function(req, res) {
+  if (!req.body) return res.sendStatus(400);
+  console.log(req.body);
+
+  async function callAddNews(req){
+    await addNews(req);
+    res.redirect("/news.html")
+  }
+  callAddNews(req)
+});
+// ----------- create news finished --------- //
 
 app.listen(port, () => {
     console.log(`Server listening on the port::${port}`);

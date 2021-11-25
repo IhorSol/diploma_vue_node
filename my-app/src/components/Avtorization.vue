@@ -36,7 +36,7 @@
           console.log(resp);
           if (resp.length != 0) {
             this.userData = resp;
-            window.location.href = "/main_page.html";
+            window.location.href = "/my_tasks.html";
 
             localStorage.login = this.userData[0].login;
             localStorage.id = this.userData[0]._id;

@@ -4,16 +4,14 @@
           <div class="all_news">
             <h2>Новини компанії</h2>
             <div class="single_news" v-for="(news, index) in allNews" :key="index">
-              <!-- <p>{{ news.newsTitle }}</p> -->
-              <!-- <p>{{ news }}</p> -->
               <div class="news_creator_photo">
-                <img class="creator_photo" :src="require(`../assets/images/${userPhoto}`)">
+                <img class="creator_photo" :src="require(`../assets/images/${news.photo}`)">
               </div>
               <div class="single_news_body">
                 <p class="news_creator_name">
                   {{ userName }}
                 </p>
-                <p class="news_text">{{ news }}</p>
+                <p class="news_text">{{ news.newsBody }}</p>
               </div>
             </div>
 
@@ -92,15 +90,23 @@
         userPhoto: localStorage.getItem("photo"),
       }
     },
+    created: function() {
+      this.getAllNews()
+    },
     methods: {
-      addNews() {
-        if (this.newsBody) {
-          this.allNews.push(this.newsBody);
-          this.newsBody = '';
-        } else {
-          return
-        }
-      }
+      async addNews() {
+        let newsToAdd = {"creator": localStorage.getItem("id"), "newsBody": this.newsBody, "photo": this.userPhoto}
+        // console.log(newsToAdd);
+        await fetch(`/api/createNews`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(newsToAdd)
+          })
+      },
+      getAllNews: async function () {
+        const response = await fetch(`/api/allNews`)
+        this.allNews = await response.json();
+      },
     }
   }
 </script>
