@@ -40,6 +40,9 @@
 .settings_users {
   padding: 20px;
   margin-left: 150px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 51%;
 
   .settings_user_card {
     display: flex;
@@ -48,13 +51,16 @@
     border-radius: 10px;
     padding: 10px 20px;
     background: #fafafa;
-    margin: 0 20px 20px 0;
+    margin: 0 50px 20px 0;
+    height: 130px;
+    width: 280px;
     .settings_users__photo {
       width: 100px;
       height: 100px;
       background: #ccc;
       border-radius: 50%;
       margin-right: 15px;
+      overflow: hidden;
     }
     .settings_users__info {
       div {

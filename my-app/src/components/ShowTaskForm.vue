@@ -6,7 +6,7 @@
         <div class="set_task_form__header">
           <h2>Поточне завдання</h2>
           <!-- <input name="creator" v-bind:value='creator_id' style="display:none"> -->
-          <button class="show_task_form__close_btn" onclick="event.preventDefault()">X</button>
+          <button class="show_task_form__close_btn comments_form_btn_close" onclick="event.preventDefault()">X</button>
         </div>
         <input type="text" class="set_task_form__name" placeholder="Назва задачі" name="title"  v-model='taskTitle'>
         <div class="set_task_form__details">
@@ -114,3 +114,17 @@
     }
   }
 </script>
+<style>
+.comments_form_btn_close {
+  background: #6a9ce6;
+  padding: 3px 5px;
+  cursor: pointer;
+  border: 0px;
+  border-radius: 5px;
+  color: #fff;
+}
+.comments_form_btn_close:hover {
+  transition: all 0.2s ease;
+  background: #4582de;
+}
+</style>

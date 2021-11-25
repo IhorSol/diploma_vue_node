@@ -6,7 +6,7 @@
         <div class="set_task_form__header">
           <h2>Поточне завдання</h2>
           <!-- <input name="creator" v-bind:value='creator_id' style="display:none"> -->
-          <button class="set_task_form__close_btn" onclick="event.preventDefault()">X</button>
+          <!-- <button class="set_task_form__close_btn comment_form_btn_close" onclick="event.preventDefault()">X</button> -->
         </div>
         <input type="text" class="set_task_form__name" placeholder="Назва задачі" name="title"  v-model='taskTitle'>
         <div class="set_task_form__details">
@@ -138,4 +138,5 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
 </style>

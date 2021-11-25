@@ -6,6 +6,11 @@
 @import 'set_task';
 @import 'set_task_form';
 @import 'settings';
+@import 'users';
+@import 'comment_form';
+@import 'news';
+
+
 
 
 * {
@@ -36,7 +41,7 @@ main {
 
 
   .main-part {
-    min-width: 90%;
+    width: 90%;
     margin: 0 auto;
     // display: flex;
 
@@ -51,7 +56,13 @@ main {
 
 .my_tasks_part {
   @extend %task;
-  padding: 20px;
+  padding: 40px 40px;
+  display: flex;
+  flex-wrap: wrap;
+  // justify-content: space-around;
+  justify-content: flex-start;
+  // border: 1px solid red;
+
 
   #done_btn {
     margin-left: 65%;
@@ -63,6 +74,13 @@ main {
   input, textarea, select, .set_task_form__name{
     pointer-events: none;
   }
+}
+.users {
 
-
+  display: flex;
+  // justify-content: space-around;
+  flex-wrap: wrap;
+}
+.flex{
+  display: flex;
 }
