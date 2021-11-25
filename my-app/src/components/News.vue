@@ -9,7 +9,7 @@
               </div>
               <div class="single_news_body">
                 <p class="news_creator_name">
-                  {{ userName }}
+                  {{ news.creatorName }}
                 </p>
                 <p class="news_text">{{ news.newsBody }}</p>
               </div>
@@ -95,13 +95,14 @@
     },
     methods: {
       async addNews() {
-        let newsToAdd = {"creator": localStorage.getItem("id"), "newsBody": this.newsBody, "photo": this.userPhoto}
+        let newsToAdd = {"creator": localStorage.getItem("id"), "newsBody": this.newsBody, "photo": this.userPhoto, "creatorName": this.userName }
         // console.log(newsToAdd);
         await fetch(`/api/createNews`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(newsToAdd)
           })
+          document.location.reload();
       },
       getAllNews: async function () {
         const response = await fetch(`/api/allNews`)
