@@ -28,15 +28,14 @@
     }
 }
 
-.flex{
-  display: flex;
-}
-.asigned_tasks_part {
 
+.asigned_tasks_part {
 }
 .asigned_tasks {
   display: flex;
-  justify-content: space-between;
+  // border: 1px solid red;
+  // justify-content: space-between;
+  flex-wrap: wrap;
   @extend %task;
   }
 
@@ -45,4 +44,7 @@
   .#{$status}-#{$new_class} {
     background: $color;
   }
+}
+.finished {
+  background: #ebfcd9!important;
 }

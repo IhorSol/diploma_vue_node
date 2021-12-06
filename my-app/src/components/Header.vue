@@ -47,7 +47,18 @@
     }
     setInterval(clock, 1000);
     clock();
-  }
+
+    function date_on_site(){
+      let date = new Date();
+      let day = date.getDate();
+      let month = date.getMonth();
+      let year = date.getFullYear()
+      let current_data = day + "." + (month + 1) + "." + year;
+      document.querySelector(".data").innerHTML = current_data;
+
+    }
+    date_on_site();
+  },
 }
 </script>
 

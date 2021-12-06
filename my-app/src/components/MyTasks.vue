@@ -9,7 +9,7 @@
 import ShowTaskForm from './ShowTaskForm.vue';
 import MyAsignedTasks from './MyAsignedTasks.vue';
 
-import $ from 'jquery'
+// import $ from 'jquery'
 
 export default {
   name:'MyTasks',
@@ -20,9 +20,9 @@ export default {
   },
   components: { ShowTaskForm, MyAsignedTasks}, // MyTasksCommentsForm
   mounted() {
-    $(".hide_menu").on('click', function() {
-      $(".aside-menu").toggleClass("show_more");
-    })
+    // $(".hide_menu").on('click', function() {
+    //   $(".aside-menu").toggleClass("show_more");
+    // })
   },
   methods: {
     transferDataToShowForm(event) {

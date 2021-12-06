@@ -9,10 +9,10 @@
           {{ user.name }} {{ user.surname}}
         </div>
         <div class="settings_user_login">
-          {{ user.email }}
+          Login: {{ user.login }}
         </div>
         <div class="settings_user_password">
-          {{ user.phone }}
+          Password: {{ user.password }}
         </div>
         <div class="settings_user_delete_user" @click="deleteUser(`${user._id}`)"><button id="del_user">Delete user <i class="far fa-trash-alt"></i></button></div>
       </div>

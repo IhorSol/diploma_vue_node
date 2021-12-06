@@ -41,6 +41,8 @@
     padding: 10px 20px;
     padding-top: 20px;
     color: $asigned_task_text_color;
+    position: relative;
+    margin: 0 80px 50px 0;
 
     .asigned_task__header {
 
@@ -54,14 +56,20 @@
         height: 20px;
         // background: #7af060;
         border-radius: 10px;
+        font-size: 0px;
         // border: 1px solid #60bd4b;
       }
+
     }
     .asigned_task__body {
       .asigned_task_text{
         margin-bottom: 20px;
+        height: 110px;
+        overflow: hidden;
       }
       .asigned_task__deadline{
+        position: absolute;
+        bottom: 80px;
         margin-bottom: 10px;
         i {
           margin-right: 10px;
@@ -69,6 +77,8 @@
         }
       }
       .asigned_task__asigned-by{
+        position: absolute;
+        bottom: 40px;
         margin-bottom: 20px;
         i {
           margin-right: 10px;
@@ -77,6 +87,9 @@
       }
       .asigned_task__buttons{
         display: flex;
+        position: absolute;
+        bottom: 20px;
+        width: 90%;
         button {
           border: 0;
           background: 0;

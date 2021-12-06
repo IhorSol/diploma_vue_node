@@ -7,7 +7,7 @@ const multer  = require('multer')
 //-------- config multer ---------//
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'F:/Програмування/JavaScript/diploma-vue-node/my-app/src/assets/images')
+    cb(null, 'E:/Front-end/task_manager_and_server_part/diploma_vue_node/my-app/src/assets/images')
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname)

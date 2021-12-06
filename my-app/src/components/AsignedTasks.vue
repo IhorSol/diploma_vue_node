@@ -1,10 +1,10 @@
 <template>
   <div class="asigned_tasks_part">
     <h2>Призначені завдання</h2>
-    <h2>Finished task - {{ finihsedTaskCounter }} </h2> <!-- finished task counter -->
+    <!-- <h2>Finished task - {{ finihsedTaskCounter }} </h2> finished task counter -->
     <div class="asigned_tasks">
 
-      <div class="asigned_task" v-for="item in tasksSetByMe" v-bind:key="item._id">
+      <div class="asigned_task" v-for="item in tasksSetByMe" v-bind:key="item._id" v-bind:class="{'finished': item.status == 'finished'}">
         <div class="asigned_task__header">
 
           <p>Task status - {{ item.status }}</p>  <!-- task status for tests -->
@@ -41,6 +41,7 @@ import $ from 'jquery'
       return {
         tasksSetByMe: [],
         edit: true,
+        counter_completed: ''
         // finihsedNotAccepted: finihsedTaskCounter()
       }
     },

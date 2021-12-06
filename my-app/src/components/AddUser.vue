@@ -19,7 +19,7 @@
       <label for="position">Посада</label>
       <input type="text" name="position" class="input">
       <label for="avatar">Фото профілю</label>
-      <input type="file" name="avatar">
+      <input type="file" name="avatar" class="photo_input">
       <input name="employee_workload" value="0" style="display: none">
       <button id="add_user__btn">Додати</button>
     </form>
@@ -35,4 +35,5 @@
 </script>
 <style>
   .settings_add_user {padding-top: 22px;}
+  
 </style>

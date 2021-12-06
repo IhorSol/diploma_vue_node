@@ -6,7 +6,7 @@
           <img :src="require(`../assets/images/${user.image}`)">
         </div>
         <div class="user_card__user_name">{{ user.name }} {{ user.surname}}</div>
-        <div class="user_card__tasks_statistic">Виконано завдань - 10</div>
+        <!-- <div class="user_card__tasks_statistic">Виконано завдань - 10</div> -->
       </div>
       <div class="user_card__personal_info">
         <p class="user_card__position"><i class="fas fa-user-tie"></i>{{ user.position }}</p>

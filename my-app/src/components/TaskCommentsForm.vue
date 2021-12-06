@@ -25,7 +25,7 @@ export default {
   },
   props: {
     taskComments: Array,
-    taskId: String,
+    taskId: Number,
   },
   methods: {
     addComment: async function (e) {
@@ -37,7 +37,9 @@ export default {
       );
       this.userComments = '';
 
-      let commentsToUpdate = { "_id": toString(this.taskId), comments: this.taskComments};
+      let commentsToUpdate = { "_id": this.taskId, comments: this.taskComments};
+      console.log(toString(this.taskId));
+      console.log(commentsToUpdate);
 
       await fetch(`/api/addComment`, {
           method: 'POST',

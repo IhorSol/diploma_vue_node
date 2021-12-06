@@ -1,0 +1,86 @@
+#news {
+  .news_part {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px 40px;
+    .all_news {
+      h2 {
+        color: $title_color;
+        text-align: center;
+        margin-bottom: 50px;
+      }
+      // width: 80%;
+      .single_news {
+        display: flex;
+        // width: 70%;
+        align-items: center;
+        margin-bottom: 20px;
+        .news_creator_photo {
+          width: 100px;
+          height: 100px;
+          background: #d5ccde;
+          border-radius: 50%;
+          margin-right: 20px;
+        }
+        .single_news_body {
+          background-color: $comment_color;
+          border-radius: 10px;
+          padding: 10px;
+          width: 800px;
+          .single_news_body__header {
+            display: flex;
+            justify-content: space-between;
+            .news_creator_name,
+            .single_news_body__data {
+              font-style: italic;
+              font-weight: bold;
+              color: $title_color;
+              margin-bottom: 10px;
+            }
+            .single_news_body__data {
+              font-size: 14px;
+              color: #6b7d9c;
+            }
+
+          }
+          .news_text {
+
+          }
+        }
+      }
+    }
+    .news_aside_part {
+
+      padding: 30px;
+      padding-top: 80px;
+      .add_news_form {
+        border-radius: 10px;
+        border: 1px solid darken($set_task_form_bg, 2);
+        width: 400px;
+        background: $set_task_form_bg;
+        h3 {
+          color: $title_color;
+          margin-bottom: 10px;
+          text-align: center;
+          padding-top: 20px;
+        }
+        textarea {
+          width: 300px;
+          height: 130px;
+          margin-left: 40px;
+          margin-top: 10px;
+          resize: none;
+          @extend %borders;
+          border-radius: 7px;
+          padding: 10px;
+        }
+        .add_news_button {
+          @extend %btn;
+          margin: 10px 0 20px 40px;
+        }
+        margin-bottom: 30px;
+      }
+    }
+  }
+}

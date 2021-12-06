@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Avtorization from '../components/Avtorization.vue'
 
-import '../css/main.min.css'
+// import '../css/main.min.css'
 import '../css/autoriz.min.css'
+
 Vue.config.productionTip = false
 
 
