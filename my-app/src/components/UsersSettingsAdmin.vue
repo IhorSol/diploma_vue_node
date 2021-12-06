@@ -14,7 +14,7 @@
         <div class="settings_user_password">
           {{ user.phone }}
         </div>
-        <div class="settings_user_delete_user"><button id="del_user">Delete user <i class="far fa-trash-alt"></i></button></div>
+        <div class="settings_user_delete_user" @click="deleteUser(`${user._id}`)"><button id="del_user">Delete user <i class="far fa-trash-alt"></i></button></div>
       </div>
     </div>
   </div>
@@ -36,6 +36,16 @@
         console.log('showLog from requestToApi');
         const response = await fetch('/api/allUsers');
         this.usersAdmin = await response.json();
+      },
+      deleteUser: async function(userId){
+        console.log('deleteUser func started. User id - ' + userId);
+        let userIdtoDelete = {id: parseInt(userId)};
+        await fetch(`/api/deleteUser`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(userIdtoDelete)
+          })
+          document.location.reload()
       },
     }
   }

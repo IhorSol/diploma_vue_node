@@ -312,6 +312,28 @@ async function checkUser(userObj) {
 }
 // ---------- check user avtirization finished ------------ //
 
+//------------ delete user start -------//
+async function deleteUser(userIdObj) {
+  const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
+  const client = new MongoClient(uri);
+
+  console.log('Log from delete User. Inc obj');
+  console.log(userIdObj);
+
+  try {
+    await client.connect();
+    const collection = client.db("task_manager").collection("users");
+    await collection.deleteOne({_id: userIdObj.id});
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await client.close();
+  }
+
+}
+//------------ delete user end -------//
+
 //---------- getAllNews started ------------//
 async function getAllNews() {
   const uri = "mongodb+srv://admin:admin@cluster0.uvxe1.mongodb.net/task_manager?retryWrites=true&w=majority";
@@ -374,6 +396,7 @@ app.post('/api/contacts', upload.single('avatar'), urlencodedParser, function(re
   // console.log(req.body.image = req.file.originalname);
   // console.log(req.body);
   req.body.image = req.file.originalname
+  req.body.employee_workload = parseInt(req.body.employee_workload);
   addUserPost(req);
   res.redirect("/settings.html");
 });
@@ -568,6 +591,19 @@ app.post('/api/checkUser', urlencodedParser, function(req, res) {
   callCheckUser(req.body)
 });
 //------ check user while autorization finished -------//
+
+//------ deleteUser started --------//
+app.post('/api/deleteUser', (req, res) => {
+  async function callDeleteUser(){
+    console.log('api/deleteUser - called !!!');
+    console.log(req.body);
+    await deleteUser(req.body);
+    res.sendStatus(200);
+    console.log('api/deleteUser - finished !!!');
+  }
+  callDeleteUser()
+});
+//------ deleteUser finished --------//
 
 // ------- get allNews started ------------//
 app.get('/api/allNews', (req, res) => {
