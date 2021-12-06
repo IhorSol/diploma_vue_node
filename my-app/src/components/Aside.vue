@@ -2,22 +2,34 @@
   <aside class="aside-menu">
     <div id="aside_menu_fixed">
       <div class="set-task"><a href="set_task.html">
-        <i class="fas fa-clipboard-list"></i>
+        <div class="icon_block">
+          <i class="fas fa-clipboard-list"></i>
+          <div class="notification_completed_tasks">1</div>
+        </div>
         <p class="menu_item">Призначити завдання</p>
         </a>
       </div>
       <div class="my-tasks"><a href="my_tasks.html">
-        <i class="fas fa-tasks"></i>
+        <div class="icon_block">
+          <i class="fas fa-tasks"></i>
+          <div class="notification_my_tasks"></div>
+        </div>
         <p class="menu_item">Мої завдання</p>
         </a>
       </div>
       <div class="colleages"><a href="users.html">
-        <i class="fas fa-user-friends"></i>
+        <div class="icon_block">
+          <i class="fas fa-user-friends"></i>
+          <div class="notification_users"></div>
+        </div>
         <p class="menu_item">Працівники</p>
         </a>
       </div>
       <div class="news"><a href="news.html">
-        <i class="fas fa-newspaper"></i>
+        <div class="icon_block">
+          <i class="fas fa-newspaper"></i>
+          <div class="notification_news"></div>
+        </div>
         <p class="menu_item">Новини</p>
         </a>
       </div>

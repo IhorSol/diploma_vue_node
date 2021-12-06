@@ -28,12 +28,21 @@
           border-radius: 10px;
           padding: 10px;
           width: 800px;
+          .single_news_body__header {
+            display: flex;
+            justify-content: space-between;
+            .news_creator_name,
+            .single_news_body__data {
+              font-style: italic;
+              font-weight: bold;
+              color: $title_color;
+              margin-bottom: 10px;
+            }
+            .single_news_body__data {
+              font-size: 14px;
+              color: #6b7d9c;
+            }
 
-          .news_creator_name {
-            font-style: italic;
-            font-weight: bold;
-            color: $title_color;
-            margin-bottom: 10px;
           }
           .news_text {
 

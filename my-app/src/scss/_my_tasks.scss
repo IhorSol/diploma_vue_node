@@ -1,0 +1,18 @@
+.my_tasks_part {
+  @extend %task;
+  padding: 40px 40px;
+  display: flex;
+  flex-wrap: wrap;
+  // justify-content: space-around;
+  justify-content: flex-start;
+
+
+
+  #done_btn {
+    margin-left: 65%;
+    i {font-size: 30px}
+  }
+}
+.new_task {
+  background: #f2f7ff!important;
+}

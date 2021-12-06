@@ -41,6 +41,26 @@ aside {
       background: $aside-hover-color;
     }
   } ///*****************
+  .icon_block {
+    width: 55px;
+    margin: 0 auto;
+    position: relative;
+      div {
+        width: 23px;
+        height: 23px;
+        line-height: 23px;
+        background: #e34834;
+        position: absolute;
+        top: 5px;
+        right: 0;
+        border-radius: 50%;
+        color: #fff;
+      }
+      div:empty {
+        display: none;
+      }
+
+  }
 }
   .hide_menu {
     position: absolute;

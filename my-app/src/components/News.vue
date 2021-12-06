@@ -8,9 +8,15 @@
                 <img class="creator_photo" :src="require(`../assets/images/${news.photo}`)">
               </div>
               <div class="single_news_body">
-                <p class="news_creator_name">
-                  {{ news.creatorName }}
-                </p>
+                <div class="single_news_body__header">
+                  <div class="news_creator_name">
+                    {{ news.creatorName }}
+                  </div>
+                  <div class="single_news_body__data">
+                    {{ news.newsDate }}
+                  </div>
+
+                </div>
                 <p class="news_text">{{ news.newsBody }}</p>
               </div>
             </div>
@@ -88,14 +94,26 @@
         newsBody: '',
         userName: localStorage.getItem("name"),
         userPhoto: localStorage.getItem("photo"),
+        newsDate: '',
       }
     },
     created: function() {
       this.getAllNews()
     },
+    mounted() {
+      // function date_on_site(){
+      //   let date = new Date();
+      //   let day = date.getDate();
+      //   let month = date.getMonth();
+      //   let year = date.getFullYear()
+      //   let current_data = day + "." + (month + 1) + "." + year;
+      //   console.log(current_data);
+      // }
+      this.date_on_site();
+    },
     methods: {
       async addNews() {
-        let newsToAdd = {"creator": localStorage.getItem("id"), "newsBody": this.newsBody, "photo": this.userPhoto, "creatorName": this.userName }
+        let newsToAdd = {"creator": localStorage.getItem("id"), "newsBody": this.newsBody, "photo": this.userPhoto, "creatorName": this.userName, "newsDate": this.newsDate }
         // console.log(newsToAdd);
         await fetch(`/api/createNews`, {
             method: 'POST',
@@ -108,6 +126,14 @@
         const response = await fetch(`/api/allNews`)
         this.allNews = await response.json();
       },
+      date_on_site(){
+        let date = new Date();
+        let day = date.getDate();
+        let month = date.getMonth();
+        let year = date.getFullYear()
+        let current_data = day + "." + (month + 1) + "." + year;
+        this.newsDate = current_data;
+      }
     }
   }
 </script>

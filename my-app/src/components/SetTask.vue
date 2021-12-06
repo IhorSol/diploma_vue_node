@@ -1,20 +1,21 @@
 <template>
-  <div class="main-part">
-    <SetTaskForm v-bind:allUsers="allUsersParent"/>
-    <ShowTaskForm :info = "infoToShowForm" />
-    <!-- <SetTaskCommentsForm/> -->
-    <div class="tasks_asign">
-      <div class="set_task_btn">
-        <button id="set_task">Призначити завдання</button>
+      <div class="main-part">
+        <SetTaskForm v-bind:allUsers="allUsersParent"/>
+        <ShowTaskForm :info = "infoToShowForm" />
+        <!-- <SetTaskCommentsForm/> -->
+        <div class="tasks_asign">
+          <div class="set_task_btn">
+            <button id="set_task">Призначити завдання</button>
+          </div>
+          <AsignedTasks v-bind:allUsers="allUsersParent" v-on:commentBtnClick="transferDataToShowForm($event)" />
+        </div>
       </div>
-      <AsignedTasks v-bind:allUsers="allUsersParent" v-on:commentBtnClick="transferDataToShowForm($event)" />
-    </div>
-  </div>
 </template>
 <script>
   import SetTaskForm from './SetTaskForm.vue'
   import AsignedTasks from './AsignedTasks.vue'
   import ShowTaskForm from './ShowTaskForm.vue'
+
   import $ from 'jquery'
 
   export default {
@@ -25,7 +26,7 @@
         infoToShowForm: [],
       }
     },
-    components: { SetTaskForm, AsignedTasks, ShowTaskForm}, // SetTaskCommentsForm
+    components: { SetTaskForm, AsignedTasks, ShowTaskForm, }, // SetTaskCommentsForm
     created: function() {
       this.showAllUsers()
     },
