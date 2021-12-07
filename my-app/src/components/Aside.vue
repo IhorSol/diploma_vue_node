@@ -4,7 +4,7 @@
       <div class="set-task"><a href="set_task.html">
         <div class="icon_block">
           <i class="fas fa-clipboard-list"></i>
-          <div class="notification_completed_tasks">1</div>
+          <div class="notification_completed_tasks"></div>
         </div>
         <p class="menu_item">Призначити завдання</p>
         </a>

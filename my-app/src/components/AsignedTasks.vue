@@ -63,6 +63,13 @@ import $ from 'jquery'
         $(".form").addClass("read_only");
       })
       this.complexityColor();
+      console.log(this.finihsedTaskCounter);
+      this.complexityColor();
+      if (parseInt(this.finihsedTaskCounter) > 0) {
+        document.getElementsByClassName("notification_completed_tasks")[0].innerHTML = this.finihsedTaskCounter;
+      } else {
+        document.getElementsByClassName("notification_completed_tasks")[0].innerHTML = "";
+      }
     },
     mounted() {
       $("#set_task").on('click', function() {
@@ -82,8 +89,6 @@ import $ from 'jquery'
         $(".form").removeClass("read_only");
         $(".set_task_form__name").attr("disabled", false);
       })
-
-      this.complexityColor();
 
     },
     computed: {
